@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>GLOBAL OPS CENTER - Dashboard</title>
+
+<style>
+  :root {
+    --accent: #01C278; /* Verde Oficial */
+    --primary: #000;
+    --bg: #fff;
+    --card-bg: #fff;
+    --text-city: #333;
+    --border: var(--accent);
+    --remove: #ff4d4d;
+    --header-border: #eee;
+  }
+
+  body.dark-mode {
+    --primary: #fff;
+    --bg: #0a0a0a;
+    --card-bg: #1a1a1a;
+    --text-city: #aaa;
+    --header-border: #333;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--primary);
+    overflow: hidden;
+    transition: background 0.3s, color 0.3s;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 40px;
+    border-bottom: 2px solid var(--header-border);
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .header-btns { display: flex; gap: 10px; }
+
+  :fullscreen header, :fullscreen .region-controls, :fullscreen .btn-remove {
+    display: none !important;
+  }
+
+  /* 🏢 BRANDING */
+  .main-branding {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+    width: 100%;
+    padding-top: 5px;
+  }
+
+  .main-logo {
+    height: 42px;
+    width: auto;
+    /* Filtro calibrado para o verde #01C278 */
+    filter: invert(48%) sepia(94%) saturate(1515%) hue-rotate(125deg) brightness(96%) contrast(101%);
+  }
+
+  .title-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .title-line {
+    width: 100%;
+    border-top: 2px dashed var(--accent);
+    opacity: 0.6;
+  }
+
+  .main-title {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: var(--accent);
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin: 0;
+    padding: 2px 0;
+  }
+
+  .container {
+    padding: 10px 40px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+    gap: 15px;
+  }
+
+  .region-block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    background: var(--card-bg);
+    flex: 1.2;
+    min-height: 0; 
+  }
+
+  .region-title {
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+
+  .clocks-display {
+    display: flex;
+    justify-content: space-evenly; 
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+  }
+
+  /* 🎯 ALINHAMENTO HORIZONTAL DOS BLOCOS */
+  .country-mini-card {
+    display: flex;
+    align-items: center; /* Centraliza a bandeira/cidade com a data/hora */
+    gap: 30px;
+    padding: 10px;
+  }
+
+  .identity-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .time-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .date-display {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent); /* Data agora em verde para harmonia */
+    opacity: 0.8;
+    margin-bottom: 2px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ESCALAS */
+  .large-font .time { 
+    font-size: clamp(50px, 8vw, 110px);
+    font-weight: 900; 
+    letter-spacing: -3px;
+    line-height: 0.85;
+    color: var(--primary);
+  }
+  .large-font .flag-img { 
+    height: clamp(55px, 6.5vw, 95px);
+    border-radius: 8px; 
+    border: 3px solid var(--accent); 
+  }
+  .large-font .city { font-size: 14px; margin-top: 2px; }
+  .large-font .date-display { font-size: 15px; }
+
+  .middle-layout {
+    display: flex;
+    gap: 15px;
+    flex: 1.2; 
+    min-height: 0;
+  }
+
+  .secondary-clock { flex: 0.9; }
+  .secondary-clock .flag-img { 
+    height: clamp(40px, 4.5vw, 55px); 
+    border-radius: 6px;
+    border: 2px solid var(--accent); 
+  }
+  .secondary-clock .time { 
+    font-size: clamp(30px, 4vw, 55px); 
+    font-weight: 800; 
+    line-height: 0.85;
+  }
+  .secondary-clock .date-display { font-size: 11px; }
+
+  .city { 
+    font-weight: 900; 
+    text-transform: uppercase; 
+    color: var(--text-city);
+    letter-spacing: 0.5px;
+  }
+
+  .seconds { font-size: 0.45em; color: var(--accent); margin-left: 4px; font-weight: 800; }
+
+  .region-controls { display: flex; justify-content: center; gap: 8px; z-index: 20; padding-bottom: 5px;}
+  select { background: var(--card-bg); color: var(--primary); border: 1px solid var(--accent); border-radius: 4px; padding: 2px 6px; font-size: 10px; font-weight: 800; }
+  .btn-ui { background: var(--accent); color: #fff; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 10px; text-transform: uppercase; }
+  .btn-ui.dark { background: #333; }
+  .btn-remove { position: absolute; top: -5px; right: -5px; background: var(--remove); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px; z-index: 10; opacity: 0.7; }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div style="font-size: 11px; font-weight: 800; color: var(--accent);">SYSTEM STATUS: ONLINE</div>
+  <div class="header-btns">
+    <button onclick="toggleDarkMode()" class="btn-ui dark" id="dark-btn">MODO NOTURNO</button>
+    <button onclick="toggleFullScreen()" class="btn-ui">TELA CHEIA</button>
+  </div>
+</header>
+
+<div class="container">
+  <div class="main-branding">
+    <img src="https://www.busup.com/hubfs/BUS%20-%202023/busup-logo.svg" alt="Logo" class="main-logo">
+    <div class="title-wrapper">
+      <div class="title-line"></div>
+      <h1 class="main-title">GLOBAL OPS CENTER</h1>
+      <div class="title-line"></div>
+    </div>
+  </div>
+
+  <div class="region-block large-font" id="block-europa"></div>
+
+  <div class="middle-layout">
+    <div class="region-block large-font" id="block-sul"></div>
+    <div class="region-block large-font" id="block-central"></div>
+  </div>
+
+  <div class="region-block secondary-clock" id="block-norte"></div>
+</div>
+
+<script>
+const regionalDB = {
+  "Europa": [
+    { tz: "Europe/Lisbon", name: "Portugal", flag: "pt", default: true },
+    { tz: "Europe/Madrid", name: "Espanha", flag: "es", default: true },
+    { tz: "Europe/Paris", name: "França", flag: "fr", default: false }
+  ],
+  "América do Sul": [{ tz: "America/Sao_Paulo", name: "Brasil (SP)", flag: "br", default: true }],
+  "América Central": [{ tz: "America/Mexico_City", name: "México (CDMX)", flag: "mx", default: true }],
+  "América do Norte": [
+    { tz: "America/New_York", name: "EUA (PA/ATL)", flag: "us", default: true },
+    { tz: "America/Indiana/Indianapolis", name: "EUA (IND)", flag: "us", default: true },
+    { tz: "America/Chicago", name: "EUA (HOU/MS)", flag: "us", default: true },
+    { tz: "America/Los_Angeles", name: "EUA (SEA)", flag: "us", default: true }
+  ]
+};
+
+const config = {
+  "Europa": { id: "block-europa" }, "América do Sul": { id: "block-sul" },
+  "América Central": { id: "block-central" }, "América do Norte": { id: "block-norte" }
+};
+
+let activeClocks = [];
+
+function init() {
+  Object.keys(config).forEach(reg => {
+    const data = config[reg];
+    const parent = document.getElementById(data.id);
+    const optionsHtml = regionalDB[reg].map((item, index) => `<option value="${index}">${item.name}</option>`).join('');
+    parent.innerHTML = `
+      <div class="region-title">${reg}</div>
+      <div class="region-controls">
+        <select id="select-${data.id}"><option value="">+ LOCALIDADE</option>${optionsHtml}</select>
+        <button class="btn-ui add-btn" onclick="addClock('${reg}', '${data.id}')">ADD</button>
+      </div>
+      <div class="clocks-display" id="display-${data.id}"></div>
+    `;
+    regionalDB[reg].forEach(item => { if(item.default) render(data.id, item.tz, item.name, item.flag); });
+  });
+}
+
+function render(containerId, tz, name, flag) {
+  const display = document.getElementById(`display-${containerId}`);
+  if(activeClocks.some(c => c.tz === tz && c.containerId === containerId)) return;
+  const uniqueId = `t-${Math.random().toString(36).substr(2, 9)}`;
+  const card = document.createElement("div");
+  card.className = "country-mini-card";
+  card.id = `card-${uniqueId}`;
+  card.innerHTML = `
+    <button class="btn-remove" onclick="removeClock('${uniqueId}')">×</button>
+    <div class="identity-block">
+        <img class="flag-img" src="https://flagcdn.com/w160/${flag}.png">
+        <div class="city">${name}</div>
+    </div>
+    <div class="time-block">
+        <div class="date-display" id="date-${uniqueId}">-- ------- ----</div>
+        <div class="time" id="${uniqueId}">00:00<span class="seconds">00</span></div>
+    </div>
+  `;
+  display.appendChild(card);
+  activeClocks.push({ id: uniqueId, tz, containerId });
+}
+
+function addClock(regionName, containerId) {
+  const select = document.getElementById(`select-${containerId}`);
+  if(select.value !== "") {
+    const item = regionalDB[regionName][select.value];
+    render(containerId, item.tz, item.name, item.flag);
+    select.value = "";
+  }
+}
+
+function removeClock(id) {
+  const el = document.getElementById(`card-${id}`);
+  if(el) { el.remove(); activeClocks = activeClocks.filter(c => c.id !== id); }
+}
+
+function update() {
+  const now = new Date();
+  activeClocks.forEach(c => {
+    const timeEl = document.getElementById(c.id);
+    const dateEl = document.getElementById(`date-${c.id}`);
+    if(timeEl && dateEl) {
+      try {
+        const timeStr = now.toLocaleTimeString("pt-BR", {timeZone: c.tz, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
+        const [h, m, s] = timeStr.split(':');
+        timeEl.innerHTML = `${h}:${m}<span class="seconds">${s}</span>`;
+        
+        const dateStr = now.toLocaleDateString("en-GB", {timeZone: c.tz, day:'2-digit', month:'long', year:'numeric'});
+        dateEl.innerText = dateStr;
+      } catch(e) {}
+    }
+  });
+}
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const btn = document.getElementById('dark-btn');
+  btn.innerText = document.body.classList.contains('dark-mode') ? 'MODO CLARO' : 'MODO NOTURNO';
+}
+
+init();
+setInterval(update, 1000);
+</script>
+</body>
+</html>
