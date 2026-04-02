@@ -2,18 +2,19 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>GLOBAL OPS CENTER - Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLOBAL OPS CENTER - BUSUP</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --accent: #01C278; /* Verde Oficial */
+    --accent: #01C278; 
     --primary: #000;
     --bg: #fff;
     --card-bg: #fff;
     --text-city: #333;
-    --border: var(--accent);
-    --remove: #ff4d4d;
     --header-border: #eee;
+    --remove: #ff4d4d;
   }
 
   body.dark-mode {
@@ -26,96 +27,78 @@
 
   body {
     margin: 0;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--primary);
     overflow: hidden;
-    transition: background 0.3s, color 0.3s;
     height: 100vh;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
   }
 
   header {
     display: flex;
     justify-content: space-between;
-    padding: 8px 40px;
+    padding: 10px 40px;
     border-bottom: 2px solid var(--header-border);
     align-items: center;
     flex-shrink: 0;
   }
 
-  .header-btns { display: flex; gap: 10px; }
-
-  :fullscreen header, :fullscreen .region-controls, :fullscreen .btn-remove {
+  /* ESCONDER EM TELA CHEIA (webOS 23) */
+  :fullscreen header, :-webkit-full-screen header,
+  :fullscreen .region-controls, :-webkit-full-screen .region-controls,
+  :fullscreen .btn-remove, :-webkit-full-screen .btn-remove {
     display: none !important;
   }
 
-  /* 🏢 BRANDING */
   .main-branding {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 25px;
-    margin-bottom: 10px;
+    padding: 10px 0;
     flex-shrink: 0;
-    width: 100%;
-    padding-top: 5px;
   }
 
   .main-logo {
-    height: 42px;
-    width: auto;
-    /* Filtro calibrado para o verde #01C278 */
+    height: 40px;
     filter: invert(48%) sepia(94%) saturate(1515%) hue-rotate(125deg) brightness(96%) contrast(101%);
   }
 
-  .title-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .title-line {
-    width: 100%;
-    border-top: 2px dashed var(--accent);
-    opacity: 0.6;
-  }
-
+  .title-wrapper { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .title-line { width: 100%; border-top: 2px dashed var(--accent); opacity: 0.6; }
   .main-title {
     font-size: 24px;
     font-weight: 900;
-    letter-spacing: 6px;
+    letter-spacing: 5px;
     color: var(--accent);
     text-transform: uppercase;
-    line-height: 1.2;
     margin: 0;
-    padding: 2px 0;
   }
 
+  /* CONTAINER PRINCIPAL OCUPANDO TUDO */
   .container {
-    padding: 10px 40px 20px 40px;
+    padding: 0 30px 20px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    overflow: hidden;
-    box-sizing: border-box;
+    flex: 1; /* Ocupa todo o resto da tela */
     gap: 15px;
+    overflow: hidden;
+    min-height: 0;
   }
 
   .region-block {
     display: flex;
     flex-direction: column;
-    width: 100%;
     border: 2px solid var(--accent);
     border-radius: 12px;
     padding: 10px;
-    box-sizing: border-box;
-    position: relative;
     background: var(--card-bg);
-    flex: 1.2;
-    min-height: 0; 
+    flex: 1; /* Permite que o bloco cresça */
+    position: relative;
+    min-height: 0;
   }
 
   .region-title {
@@ -123,108 +106,113 @@
     font-weight: 900;
     text-transform: uppercase;
     color: var(--accent);
+    text-align: center;
     margin-bottom: 5px;
     letter-spacing: 2px;
-    text-align: center;
+  }
+
+  .region-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  select {
+    background: var(--card-bg);
+    color: var(--primary);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 700;
   }
 
   .clocks-display {
     display: flex;
-    justify-content: space-evenly; 
+    justify-content: space-evenly;
     align-items: center;
-    width: 100%;
-    flex-grow: 1;
-  }
-
-  /* 🎯 ALINHAMENTO HORIZONTAL DOS BLOCOS */
-  .country-mini-card {
-    display: flex;
-    align-items: center; /* Centraliza a bandeira/cidade com a data/hora */
-    gap: 30px;
-    padding: 10px;
-  }
-
-  .identity-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  .time-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .date-display {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--accent); /* Data agora em verde para harmonia */
-    opacity: 0.8;
-    margin-bottom: 2px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-  }
-
-  /* ESCALAS */
-  .large-font .time { 
-    font-size: clamp(50px, 8vw, 110px);
-    font-weight: 900; 
-    letter-spacing: -3px;
-    line-height: 0.85;
-    color: var(--primary);
-  }
-  .large-font .flag-img { 
-    height: clamp(55px, 6.5vw, 95px);
-    border-radius: 8px; 
-    border: 3px solid var(--accent); 
-  }
-  .large-font .city { font-size: 14px; margin-top: 2px; }
-  .large-font .date-display { font-size: 15px; }
-
-  .middle-layout {
-    display: flex;
-    gap: 15px;
-    flex: 1.2; 
+    flex: 1;
     min-height: 0;
   }
 
-  .secondary-clock { flex: 0.9; }
-  .secondary-clock .flag-img { 
-    height: clamp(40px, 4.5vw, 55px); 
-    border-radius: 6px;
-    border: 2px solid var(--accent); 
+  .country-mini-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    padding: 5px;
   }
-  .secondary-clock .time { 
-    font-size: clamp(30px, 4vw, 55px); 
-    font-weight: 800; 
-    line-height: 0.85;
-  }
-  .secondary-clock .date-display { font-size: 11px; }
 
-  .city { 
+  .btn-remove {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--remove);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-weight: 900;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .identity-block { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .time-block { display: flex; flex-direction: column; align-items: center; }
+
+  .date-display {
+    font-size: clamp(12px, 1.2vw, 15px);
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .time {
     font-weight: 900; 
-    text-transform: uppercase; 
-    color: var(--text-city);
-    letter-spacing: 0.5px;
+    line-height: 0.9;
+    letter-spacing: -2px;
   }
 
-  .seconds { font-size: 0.45em; color: var(--accent); margin-left: 4px; font-weight: 800; }
+  /* AJUSTE DE PROPORÇÕES */
+  .large-font .time { font-size: clamp(50px, 7vw, 110px); }
+  .large-font .flag-img { height: clamp(50px, 6vw, 90px); border: 3px solid var(--accent); border-radius: 8px; }
+  .large-font .city { font-size: 14px; font-weight: 900; }
 
-  .region-controls { display: flex; justify-content: center; gap: 8px; z-index: 20; padding-bottom: 5px;}
-  select { background: var(--card-bg); color: var(--primary); border: 1px solid var(--accent); border-radius: 4px; padding: 2px 6px; font-size: 10px; font-weight: 800; }
-  .btn-ui { background: var(--accent); color: #fff; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 10px; text-transform: uppercase; }
+  .middle-layout { 
+    display: flex; 
+    gap: 15px; 
+    flex: 1.1; /* Proporção um pouco maior para o meio */
+    min-height: 0;
+  }
+  
+  .secondary-clock { flex: 0.8; }
+  .secondary-clock .time { font-size: clamp(30px, 4vw, 55px); }
+  .secondary-clock .flag-img { height: clamp(40px, 4.5vw, 55px); border: 2px solid var(--accent); border-radius: 6px; }
+
+  .city { font-weight: 900; text-transform: uppercase; color: var(--text-city); }
+  .seconds { font-size: 0.45em; color: var(--accent); margin-left: 4px; font-weight: 900; }
+
+  .btn-ui {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 10px;
+    text-transform: uppercase;
+  }
   .btn-ui.dark { background: #333; }
-  .btn-remove { position: absolute; top: -5px; right: -5px; background: var(--remove); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px; z-index: 10; opacity: 0.7; }
 </style>
 </head>
 <body>
 
 <header id="header">
-  <div style="font-size: 11px; font-weight: 800; color: var(--accent);">SYSTEM STATUS: ONLINE</div>
+  <div style="font-size: 11px; font-weight: 900; color: var(--accent);">BUSUP OPS DASHBOARD</div>
   <div class="header-btns">
     <button onclick="toggleDarkMode()" class="btn-ui dark" id="dark-btn">MODO NOTURNO</button>
     <button onclick="toggleFullScreen()" class="btn-ui">TELA CHEIA</button>
@@ -252,6 +240,7 @@
 </div>
 
 <script>
+// (O script permanece o mesmo da versão anterior para manter a lógica de funcionamento)
 const regionalDB = {
   "Europa": [
     { tz: "Europe/Lisbon", name: "Portugal", flag: "pt", default: true },
@@ -283,8 +272,8 @@ function init() {
     parent.innerHTML = `
       <div class="region-title">${reg}</div>
       <div class="region-controls">
-        <select id="select-${data.id}"><option value="">+ LOCALIDADE</option>${optionsHtml}</select>
-        <button class="btn-ui add-btn" onclick="addClock('${reg}', '${data.id}')">ADD</button>
+        <select id="select-${data.id}"><option value="">+ LOCAL</option>${optionsHtml}</select>
+        <button class="btn-ui" onclick="addClock('${reg}', '${data.id}')">OK</button>
       </div>
       <div class="clocks-display" id="display-${data.id}"></div>
     `;
@@ -338,7 +327,6 @@ function update() {
         const timeStr = now.toLocaleTimeString("pt-BR", {timeZone: c.tz, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
         const [h, m, s] = timeStr.split(':');
         timeEl.innerHTML = `${h}:${m}<span class="seconds">${s}</span>`;
-        
         const dateStr = now.toLocaleDateString("en-GB", {timeZone: c.tz, day:'2-digit', month:'long', year:'numeric'});
         dateEl.innerText = dateStr;
       } catch(e) {}
@@ -347,8 +335,11 @@ function update() {
 }
 
 function toggleFullScreen() {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-  else document.exitFullscreen();
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
 }
 
 function toggleDarkMode() {
