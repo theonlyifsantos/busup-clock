@@ -158,7 +158,14 @@
     z-index: 10;
   }
 
-  .identity-block { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .identity-block { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 8px; 
+    width: 130px; /* Garante um espaço consistente para a quebra de texto */
+  }
+  
   .time-block { display: flex; flex-direction: column; align-items: center; }
 
   .date-display {
@@ -175,9 +182,21 @@
     letter-spacing: -2px;
   }
 
+  /* CONFIGURAÇÃO DOS NOMES (CITY) */
+  .city { 
+    font-weight: 900; 
+    text-transform: uppercase; 
+    color: var(--text-city); 
+    text-align: center;
+    line-height: 1.2;
+    word-wrap: break-word; /* Força a quebra de palavras longas se necessário */
+    overflow-wrap: break-word;
+    font-size: 14px; /* Aumentado */
+  }
+
   .large-font .time { font-size: clamp(40px, 6vw, 90px); }
   .large-font .flag-img { height: clamp(40px, 5vw, 75px); border: 3px solid var(--accent); border-radius: 8px; }
-  .large-font .city { font-size: 13px; font-weight: 900; }
+  .large-font .city { font-size: 16px; } /* Nome maior nos blocos grandes */
 
   .middle-layout { 
     display: flex; 
@@ -189,8 +208,9 @@
   .secondary-clock { flex: 0.8; }
   .secondary-clock .time { font-size: clamp(28px, 3.5vw, 50px); }
   .secondary-clock .flag-img { height: clamp(35px, 4vw, 50px); border: 2px solid var(--accent); border-radius: 6px; }
+  .secondary-clock .city { font-size: 12px; } /* Nome um pouco menor no rodapé para caber tudo */
+  .secondary-clock .identity-block { width: 100px; }
 
-  .city { font-weight: 900; text-transform: uppercase; color: var(--text-city); text-align: center; max-width: 120px; }
   .seconds { font-size: 0.45em; color: var(--accent); margin-left: 4px; font-weight: 900; }
 
   .btn-ui {
@@ -248,12 +268,12 @@ const regionalDB = {
     { tz: "America/Sao_Paulo", name: "Brasil (SP)", flag: "br", default: true }
   ],
   "América Central": [
-    { tz: "America/Mexico_City", name: "MÉXICO (CDMX y TORRERÓN)", flag: "mx", default: true },
+    { tz: "America/Mexico_City", name: "MÉXICO (CDMX e TORREÓN)", flag: "mx", default: true },
   ],
   "América do Norte": [
-    { tz: "America/New_York", name: "EUA (ATLANTA/INDIANA/PENSILVANIA)", flag: "us", default: true },
-    { tz: "America/Denver", name: "EUA (NEVADA)", flag: "us", default: true }, // Nevada e Colorado (Mountain Time)
-    { tz: "America/Chicago", name: "EUA (HOUSTON/MISSISSIPPI)", flag: "us", default: true },
+    { tz: "America/New_York", name: "EUA (ATLANTA / INDIANA / PENSILVANIA)", flag: "us", default: true },
+    { tz: "America/Denver", name: "EUA (NEVADA / COLORADO)", flag: "us", default: true },
+    { tz: "America/Chicago", name: "EUA (HOUSTON / MISSISSIPPI)", flag: "us", default: true },
     { tz: "America/Los_Angeles", name: "EUA (SEATTLE)", flag: "us", default: true }
   ]
 };
