@@ -46,7 +46,6 @@
     flex-shrink: 0;
   }
 
-  /* ESCONDER EM TELA CHEIA (webOS 23) */
   :fullscreen header, :-webkit-full-screen header,
   :fullscreen .region-controls, :-webkit-full-screen .region-controls,
   :fullscreen .btn-remove, :-webkit-full-screen .btn-remove {
@@ -78,12 +77,11 @@
     margin: 0;
   }
 
-  /* CONTAINER PRINCIPAL OCUPANDO TUDO */
   .container {
     padding: 0 30px 20px;
     display: flex;
     flex-direction: column;
-    flex: 1; /* Ocupa todo o resto da tela */
+    flex: 1;
     gap: 15px;
     overflow: hidden;
     min-height: 0;
@@ -96,7 +94,7 @@
     border-radius: 12px;
     padding: 10px;
     background: var(--card-bg);
-    flex: 1; /* Permite que o bloco cresça */
+    flex: 1;
     position: relative;
     min-height: 0;
   }
@@ -134,12 +132,13 @@
     align-items: center;
     flex: 1;
     min-height: 0;
+    gap: 10px;
   }
 
   .country-mini-card {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     position: relative;
     padding: 5px;
   }
@@ -163,7 +162,7 @@
   .time-block { display: flex; flex-direction: column; align-items: center; }
 
   .date-display {
-    font-size: clamp(12px, 1.2vw, 15px);
+    font-size: clamp(10px, 1vw, 13px);
     font-weight: 700;
     color: var(--accent);
     text-transform: uppercase;
@@ -176,23 +175,22 @@
     letter-spacing: -2px;
   }
 
-  /* AJUSTE DE PROPORÇÕES */
-  .large-font .time { font-size: clamp(50px, 7vw, 110px); }
-  .large-font .flag-img { height: clamp(50px, 6vw, 90px); border: 3px solid var(--accent); border-radius: 8px; }
-  .large-font .city { font-size: 14px; font-weight: 900; }
+  .large-font .time { font-size: clamp(40px, 6vw, 90px); }
+  .large-font .flag-img { height: clamp(40px, 5vw, 75px); border: 3px solid var(--accent); border-radius: 8px; }
+  .large-font .city { font-size: 13px; font-weight: 900; }
 
   .middle-layout { 
     display: flex; 
     gap: 15px; 
-    flex: 1.1; /* Proporção um pouco maior para o meio */
+    flex: 1.1;
     min-height: 0;
   }
   
   .secondary-clock { flex: 0.8; }
-  .secondary-clock .time { font-size: clamp(30px, 4vw, 55px); }
-  .secondary-clock .flag-img { height: clamp(40px, 4.5vw, 55px); border: 2px solid var(--accent); border-radius: 6px; }
+  .secondary-clock .time { font-size: clamp(28px, 3.5vw, 50px); }
+  .secondary-clock .flag-img { height: clamp(35px, 4vw, 50px); border: 2px solid var(--accent); border-radius: 6px; }
 
-  .city { font-weight: 900; text-transform: uppercase; color: var(--text-city); }
+  .city { font-weight: 900; text-transform: uppercase; color: var(--text-city); text-align: center; max-width: 120px; }
   .seconds { font-size: 0.45em; color: var(--accent); margin-left: 4px; font-weight: 900; }
 
   .btn-ui {
@@ -240,18 +238,23 @@
 </div>
 
 <script>
-// (O script permanece o mesmo da versão anterior para manter a lógica de funcionamento)
 const regionalDB = {
   "Europa": [
     { tz: "Europe/Lisbon", name: "Portugal", flag: "pt", default: true },
     { tz: "Europe/Madrid", name: "Espanha", flag: "es", default: true },
     { tz: "Europe/Paris", name: "França", flag: "fr", default: false }
   ],
-  "América do Sul": [{ tz: "America/Sao_Paulo", name: "Brasil (SP)", flag: "br", default: true }],
-  "América Central": [{ tz: "America/Mexico_City", name: "México (CDMX)", flag: "mx", default: true }],
+  "América do Sul": [
+    { tz: "America/Sao_Paulo", name: "Brasil (SP)", flag: "br", default: true }
+  ],
+  "América Central": [
+    { tz: "America/Mexico_City", name: "México (CDMX)", flag: "mx", default: true },
+    { tz: "America/Monterrey", name: "México (Torreón)", flag: "mx", default: true }
+  ],
   "América do Norte": [
     { tz: "America/New_York", name: "EUA (PA/ATL)", flag: "us", default: true },
     { tz: "America/Indiana/Indianapolis", name: "EUA (IND)", flag: "us", default: true },
+    { tz: "America/Denver", name: "EUA (NV/CO)", flag: "us", default: true }, // Nevada e Colorado (Mountain Time)
     { tz: "America/Chicago", name: "EUA (HOU/MS)", flag: "us", default: true },
     { tz: "America/Los_Angeles", name: "EUA (SEA)", flag: "us", default: true }
   ]
