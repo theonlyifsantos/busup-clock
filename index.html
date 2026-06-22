@@ -57,7 +57,7 @@
     align-items: center;
     justify-content: center;
     gap: 25px;
-    padding: 10px 0;
+    padding: 5px 0;
     flex-shrink: 0;
   }
 
@@ -78,11 +78,11 @@
   }
 
   .container {
-    padding: 0 30px 20px;
+    padding: 0 12px 12px;
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 15px;
+    gap: 12px;
     overflow: hidden;
     min-height: 0;
   }
@@ -128,24 +128,24 @@
 
   .clocks-display {
     display: flex;
-    justify-content: center; 
+    justify-content: space-evenly; 
     align-items: center;
     flex: 1;
     min-height: 0;
     gap: 15px; 
+    width: 100%;
   }
 
-  /* CARDS COM MÁXIMO DINÂMICO - IMPEDE COMPORTAMENTO SANFONA E SOBREPOSIÇÃO */
   .country-mini-card {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 15px;
     position: relative;
     padding: 5px 10px;
     box-sizing: border-box;
     flex: 1;
-    min-width: 0; /* Permite encolher em telas menores sem estourar */
+    min-width: 0;
   }
 
   .btn-remove {
@@ -163,12 +163,13 @@
     z-index: 10;
   }
 
+  /* Bloco do texto voltou a ter tamanho bom para o nome não esmagar */
   .identity-block { 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     gap: 6px; 
-    width: 45%; /* Baseado em porcentagem interna do card */
+    width: 42%; 
     flex-shrink: 0;
     min-width: 0;
   }
@@ -177,12 +178,12 @@
     display: flex; 
     flex-direction: column; 
     align-items: center;
-    width: 55%; /* Baseado em porcentagem interna do card */
+    width: 58%; 
     flex-shrink: 0;
   }
 
   .date-display {
-    font-size: clamp(9px, 0.9vw, 12px);
+    font-size: clamp(10px, 1.1vw, 15px);
     font-weight: 700;
     color: var(--accent);
     text-transform: uppercase;
@@ -192,8 +193,8 @@
 
   .time {
     font-weight: 900; 
-    line-height: 0.9;
-    letter-spacing: -1px;
+    line-height: 0.85;
+    letter-spacing: -2px;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
@@ -206,19 +207,26 @@
     line-height: 1.1;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    font-size: 13px;
+    font-size: 14px;
     width: 100%;
   }
 
-  /* CONFIGURAÇÃO DE TIMING E LIMITES NOS BLOCOS GRANDES */
-  .large-font .country-mini-card { max-width: 320px; } 
-  .large-font .time { font-size: clamp(32px, 4.5vw, 64px); } 
-  .large-font .flag-img { height: clamp(35px, 4.5vw, 55px); border: 3px solid var(--accent); border-radius: 8px; }
-  .large-font .city { font-size: 14px; }
+  /* CONFIGURAÇÕES DE TAMANHO MÁXIMO AMPLIADAS (BLOCOS GRANDES) */
+  .large-font .country-mini-card { max-width: 450px; } 
+  .large-font .time { font-size: clamp(45px, 6vw, 95px); } 
+  
+  /* BANDEIRA PEQUENA CONTROLADA DE FORMA INDEPENDENTE */
+  .large-font .flag-img { 
+    width: 40px; 
+    height: auto; 
+    border: 2px solid var(--accent); 
+    border-radius: 4px; 
+  } 
+  
+  .large-font .city { font-size: 15px; } /* Texto do nome mantido grande */
   
   #block-europa { flex: 1; }
 
-  /* LINHA DO MEIO CORRIGIDA COM DISTRIBUIÇÃO PROPORCIONAL NATURAL */
   .middle-layout { 
     display: flex; 
     gap: 15px; 
@@ -227,19 +235,27 @@
     width: 100%;
   }
   
-  #block-sul { flex: 2; }      /* Espaço equivalente para 2 cards */
-  #block-central { flex: 1; }  /* Espaço equivalente para 1 card */
+  #block-sul { flex: 2; }      
+  #block-central { flex: 1; }  
 
-  /* CONFIGURAÇÃO DO BLOCO INFERIOR (AMÉRICA DO NORTE - 4 CARDS) */
+  /* CONFIGURAÇÕES DE TAMANHO MÁXIMO AMPLIADAS (AMÉRICA DO NORTE - 4 CARDS) */
   .secondary-clock { flex: 0.9; }
-  .secondary-clock .country-mini-card { max-width: 250px; } 
-  .secondary-clock .time { font-size: clamp(24px, 3vw, 42px); } 
-  .secondary-clock .flag-img { height: 32px; border: 2px solid var(--accent); border-radius: 6px; }
-  .secondary-clock .city { font-size: 11px; }
-  .secondary-clock .identity-block { width: 40%; }
-  .secondary-clock .time-block { width: 60%; }
+  .secondary-clock .country-mini-card { max-width: 350px; } 
+  .secondary-clock .time { font-size: clamp(32px, 4vw, 55px); } 
+  
+  /* BANDEIRA PEQUENA NA AMÉRICA DO NORTE */
+  .secondary-clock .flag-img { 
+    width: 30px; 
+    height: auto; 
+    border: 1px solid var(--accent); 
+    border-radius: 3px; 
+  } 
+  
+  .secondary-clock .city { font-size: 12px; } /* Texto do nome mantido */
+  .secondary-clock .identity-block { width: 38%; }
+  .secondary-clock .time-block { width: 62%; }
 
-  .seconds { font-size: 0.5em; color: var(--accent); margin-left: 2px; font-weight: 900; }
+  .seconds { font-size: 0.45em; color: var(--accent); margin-left: 2px; font-weight: 900; }
 
   .btn-ui {
     background: var(--accent);
