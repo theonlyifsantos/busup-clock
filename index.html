@@ -126,16 +126,17 @@
     font-weight: 700;
   }
 
+  /* Centraliza os cards eliminando o espaço vazio espalhado nas pontas */
   .clocks-display {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center; 
     align-items: center;
     flex: 1;
     min-height: 0;
-    gap: 10px;
+    gap: 20px; 
   }
 
-  /* CARDS COM LARGURA FIXA PARA EVITAR QUE ELES FIQUEM "DANCANDO" */
+  /* COMPORTAMENTO DOS CARDS */
   .country-mini-card {
     display: flex;
     align-items: center;
@@ -143,7 +144,6 @@
     gap: 15px;
     position: relative;
     padding: 5px;
-    width: 250px; /* Largura padrão fixa */
     box-sizing: border-box;
   }
 
@@ -167,7 +167,7 @@
     flex-direction: column; 
     align-items: center; 
     gap: 8px; 
-    width: 110px;
+    width: 140px;
     flex-shrink: 0;
   }
   
@@ -190,7 +190,7 @@
     font-weight: 900; 
     line-height: 0.9;
     letter-spacing: -1px;
-    font-variant-numeric: tabular-nums; /* Mantém os números com larguras idênticas */
+    font-variant-numeric: tabular-nums;
   }
 
   .city { 
@@ -205,13 +205,14 @@
     width: 100%;
   }
 
-  /* BLOCOS GRANDES (EUROPA, SUL, CENTRAL) */
-  .large-font .time { font-size: clamp(35px, 5vw, 65px); }
-  .large-font .flag-img { height: clamp(35px, 4.5vw, 55px); border: 3px solid var(--accent); border-radius: 8px; }
-  .large-font .city { font-size: 15px; }
+  /* CONFIGURAÇÃO DE TAMANHO DOS BLOCOS GRANDES (EUROPA, SUL, CENTRAL) */
+  .large-font .country-mini-card { width: 320px; } /* Aumentado significativamente */
+  .large-font .time { font-size: clamp(40px, 5.5vw, 75px); } /* Números maiores */
+  .large-font .flag-img { height: clamp(40px, 5vw, 65px); border: 3px solid var(--accent); border-radius: 8px; }
+  .large-font .city { font-size: 16px; }
   #block-europa { flex: 1; }
 
-  /* LINHA DO MEIO FIXADA EM PORCENTAGEM EXATA PARA RECONHECIMENTO DA TV */
+  /* LINHA DO MEIO FIXADA EM PORCENTAGEM EXATA */
   .middle-layout { 
     display: flex; 
     gap: 15px; 
@@ -220,16 +221,16 @@
     width: 100%;
   }
   
-  #block-sul { width: 64%; flex: none; }      /* Largura estrita */
-  #block-central { width: 36%; flex: none; }  /* Largura estrita */
+  #block-sul { width: 64%; flex: none; }      
+  #block-central { width: 36%; flex: none; }  
 
-  /* BLOCO INFERIOR (NORTE) - MENOR PARA CABER 4 CARDS EM LINHA */
+  /* CONFIGURAÇÃO DE TAMANHO DO BLOCO INFERIOR (AMÉRICA DO NORTE) */
   .secondary-clock { flex: 0.9; }
-  .secondary-clock .country-mini-card { width: 210px; } /* Menor para acomodar os 4 da América do Norte */
-  .secondary-clock .time { font-size: clamp(26px, 3vw, 42px); }
-  .secondary-clock .flag-img { height: 35px; border: 2px solid var(--accent); border-radius: 6px; }
-  .secondary-clock .city { font-size: 11px; }
-  .secondary-clock .identity-block { width: 90px; }
+  .secondary-clock .country-mini-card { width: 260px; } /* Aumentado para o limite seguro de 4 cards */
+  .secondary-clock .time { font-size: clamp(30px, 3.5vw, 50px); } /* Números maiores */
+  .secondary-clock .flag-img { height: 42px; border: 2px solid var(--accent); border-radius: 6px; }
+  .secondary-clock .city { font-size: 12px; }
+  .secondary-clock .identity-block { width: 110px; }
 
   .seconds { font-size: 0.5em; color: var(--accent); margin-left: 2px; font-weight: 900; }
 
@@ -282,7 +283,7 @@ const regionalDB = {
   "Europa": [
     { tz: "Europe/Lisbon", name: "PORTUGAL", flag: "pt", default: true },
     { tz: "Europe/Madrid", name: "ESPANHA", flag: "es", default: true },
-    { tz: "Europe/Paris", name: "FRANÇA", flag: "fr", default: false }
+    { tz: "Europe/Paris", name: "FRANÇA", flag: "fr", default: true }
   ],
   "América do Sul": [
     { tz: "America/Sao_Paulo", name: "BR (SÃO PAULO)", flag: "br", default: true },
