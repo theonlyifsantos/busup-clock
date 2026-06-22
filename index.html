@@ -7,15 +7,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-  /* ==========================================================================
-     CORES: MODO ESCURO PADRÃO
-     ========================================================================== */
   :root {
     --accent: #01C278; 
     --primary: #fff;
     --bg: #0a0a0a;
     --card-bg: #1a1a1a;
-    --text-city: #eee; /* Deixei levemente mais claro para destacar o nome maior */
+    --text-city: #fff; /* Força o branco puro para máxima leitura de longe */
     --header-border: #333;
     --remove: #ff4d4d;
   }
@@ -24,7 +21,7 @@
     --primary: #000;
     --bg: #fff;
     --card-bg: #fff;
-    --text-city: #333;
+    --text-city: #111;
     --header-border: #eee;
   }
 
@@ -132,24 +129,38 @@
   .clocks-display {
     display: flex;
     justify-content: center; 
-    align-items: center; /* Alinhamento horizontal garantido na linha do bloco */
+    align-items: center; 
     flex: 1;
     min-height: 0;
-    gap: 15px; 
+    gap: 20px; 
     width: 100%;
   }
 
+  /* ==========================================================================
+     NOVA ESTRUTURA VERTICAL DO CARD (BLOCO EM CIMA, TEXTO EMBAIXO)
+     ========================================================================== */
   .country-mini-card {
     display: flex;
-    align-items: center; /* Garante alinhamento central vertical interno entre os blocos */
+    flex-direction: column; /* Alinha o bloco visual acima e o texto abaixo */
+    align-items: center;
     justify-content: center;
-    gap: 12px; 
+    gap: 4px; 
     position: relative;
-    padding: 5px 10px;
+    padding: 5px;
     box-sizing: border-box;
     flex: 1;
     min-width: 0;
     border: 1px solid transparent; 
+  }
+
+  /* Linha superior: Junta a bandeira ao relógio com espaço mínimo */
+  .card-top-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 6px; /* Super unido agora */
+    width: 100%;
   }
 
   .btn-remove {
@@ -167,16 +178,13 @@
     z-index: 10;
   }
 
-  /* Bloco de identidade (Texto + Bandeira) */
   .identity-block { 
     display: flex; 
-    flex-direction: column; 
     align-items: center; 
     justify-content: center;
-    gap: 6px; 
-    width: 75px;         /* Aumentado um pouco para comportar os nomes maiores sem esmagar */
-    max-width: 75px;     
-    min-width: 75px;     
+    width: 65px;         
+    max-width: 65px;     
+    min-width: 65px;     
     flex-shrink: 0;
   }
   
@@ -185,41 +193,45 @@
     flex-direction: column; 
     align-items: center;
     justify-content: center;
-    flex: 1; 
     flex-shrink: 0;
     min-width: 0;
   }
 
   .date-display {
-    font-size: clamp(11px, 1vw, 15px);
+    font-size: clamp(10px, 0.9vw, 13px);
     font-weight: 700;
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 1px;
     white-space: nowrap;
+    line-height: 1;
+    margin-bottom: 2px;
   }
 
   .time {
     font-weight: 900; 
-    line-height: 0.85;
+    line-height: 0.8;
     letter-spacing: -1.5px;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-    font-size: clamp(45px, 5.2vw, 90px); 
+    font-size: clamp(45px, 5vw, 85px); 
   }
 
-  /* TEXTO DOS LOCAIS: CONFIGURADO PARA SER MAIOR EM TODOS OS CARDS */
+  /* TEXTO ABAIXO DO RELÓGIO: AGORA MUITO MAIOR */
   .city { 
     font-weight: 900; 
     text-transform: uppercase; 
     color: var(--text-city); 
     text-align: center;
     line-height: 1.1;
-    word-break: keep-all;       
-    overflow-wrap: normal;      
+    letter-spacing: 0.5px;
+    word-break: normal;       
+    overflow-wrap: break-word;      
     white-space: normal; 
-    font-size: clamp(10px, 1.8vw, 14px); /* Ganhou um belo aumento geral */
-    width: 100%;
+    font-size: clamp(12px, 2vw, 26px); /* Perfeito para ler de longe */
+    width: 100%; /* Ocupa exatamente a largura total combinada acima */
+    max-width: 100%;
+    margin-top: 4px;
   }
 
   .flag-img { 
@@ -230,28 +242,13 @@
     box-sizing: border-box;
   } 
 
-  /* ==========================================================================
-     REGRAS EXCLUSIVAS: AMÉRICA DO NORTE (.secondary-clock)
-     ========================================================================== */
-  .secondary-clock .country-mini-card {
-    flex-direction: row; 
-    align-items: center; /* Alinhamento horizontal cravado no centro */
-    justify-content: center;
-    gap: 12px;
-  }
-
-  .secondary-clock .identity-block {
-    width: 85px; /* Ganhou uma margem extra na largura por conta dos nomes gigantes de lá */
-    max-width: 85px;
-    min-width: 85px;
+  /* Ajuste fino para os blocos com mais densidade (América do Norte com 4 relógios) */
+  .secondary-clock .time {
+    font-size: clamp(38px, 4.2vw, 68px); 
   }
 
   .secondary-clock .city {
-    font-size: clamp(9px, 1.4vw, 11px); /* Ajustado proporcionalmente para não causar sobreposição */
-  }
-
-  .secondary-clock .time {
-    font-size: clamp(38px, 4.5vw, 70px); 
+    font-size: clamp(11px, 1.5vw, 18px); /* Reduz sutilmente apenas aqui para não estourar a tela */
   }
   
   /* Grid de layout */
@@ -362,7 +359,7 @@ function init() {
   });
 }
 
-/* ORDEM INVERTIDA NO HTML INTERNO DO CARD: NOME ACIMA DA BANDEIRA */
+/* RENDEREZAÇÃO REESTRUTURADA COM TEXTO ABAIXO DA LINHA DO RELÓGIO */
 function render(containerId, tz, name, flag) {
   const display = document.getElementById(`display-${containerId}`);
   if(activeClocks.some(c => c.tz === tz && c.containerId === containerId)) return;
@@ -372,14 +369,16 @@ function render(containerId, tz, name, flag) {
   card.id = `card-${uniqueId}`;
   card.innerHTML = `
     <button class="btn-remove" onclick="removeClock('${uniqueId}')">×</button>
-    <div class="identity-block">
-        <div class="city">${name}</div>
-        <img class="flag-img" src="https://flagcdn.com/w160/${flag}.png">
+    <div class="card-top-row">
+        <div class="identity-block">
+            <img class="flag-img" src="https://flagcdn.com/w160/${flag}.png">
+        </div>
+        <div class="time-block">
+            <div class="date-display" id="date-${uniqueId}">-- ------- ----</div>
+            <div class="time" id="${uniqueId}">00:00<span class="seconds">00</span></div>
+        </div>
     </div>
-    <div class="time-block">
-        <div class="date-display" id="date-${uniqueId}">-- ------- ----</div>
-        <div class="time" id="${uniqueId}">00:00<span class="seconds">00</span></div>
-    </div>
+    <div class="city">${name}</div>
   `;
   display.appendChild(card);
   activeClocks.push({ id: uniqueId, tz, containerId });
