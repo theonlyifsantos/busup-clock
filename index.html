@@ -126,7 +126,6 @@
     font-weight: 700;
   }
 
-  /* Mudado para stretch para forçar os cards a preencherem as pontas */
   .clocks-display {
     display: flex;
     justify-content: center; 
@@ -137,7 +136,9 @@
     width: 100%;
   }
 
-  /* REMOVIDO O MAX-WIDTH: os cards agora vão expandir até ocupar tudo */
+  /* ==========================================================================
+     LAYOUT PADRÃO (EUROPA, SUL E CENTRAL) - LADO A LADO
+     ========================================================================== */
   .country-mini-card {
     display: flex;
     align-items: center;
@@ -148,13 +149,11 @@
     box-sizing: border-box;
     flex: 1;
     min-width: 0;
-    border: 1px solid var(--header-border); /* Uma leve bordinha interna deixa os cards lindos quando esticados */
+    border: 1px solid var(--header-border);
     border-radius: 8px;
   }
 
-  body.dark-mode .country-mini-card {
-    border-color: #222;
-  }
+  body.dark-mode .country-mini-card { border-color: #222; }
 
   .btn-remove {
     position: absolute;
@@ -171,7 +170,7 @@
     z-index: 10;
   }
 
-  /* Identidade cravada em 55px */
+  /* Bloco de identidade fixo em 55px nas regiões padrão */
   .identity-block { 
     display: flex; 
     flex-direction: column; 
@@ -183,7 +182,6 @@
     flex-shrink: 0;
   }
   
-  /* Bloco do relógio ganha o resto do card expandido */
   .time-block { 
     display: flex; 
     flex-direction: column; 
@@ -203,7 +201,6 @@
     white-space: nowrap;
   }
 
-  /* Relógio agora responde dinamicamente ao novo tamanho gigante do card */
   .time {
     font-weight: 900; 
     line-height: 0.85;
@@ -213,7 +210,6 @@
     font-size: clamp(45px, 5.2vw, 90px); 
   }
 
-  /* Quebras perfeitas em espaços */
   .city { 
     font-weight: 900; 
     text-transform: uppercase; 
@@ -234,7 +230,49 @@
     border-radius: 5px; 
     box-sizing: border-box;
   } 
+
+  /* ==========================================================================
+     LAYOUT EXCLUSIVO DA AMÉRICA DO NORTE (CONTEÚDO VERTICAL PARA EVITAR SOBREPOSIÇÃO)
+     ========================================================================== */
+  .secondary-clock .country-mini-card {
+    flex-direction: column; /* Coloca os blocos um embaixo do outro */
+    justify-content: space-between;
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  /* Na América do Norte, permitimos que o bloco de texto ocupe toda a largura */
+  .secondary-clock .identity-block {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    flex-direction: row; /* Coloca bandeira do lado do texto, mas no topo do card */
+    justify-content: center;
+    gap: 10px;
+    border-bottom: 1px dashed rgba(1, 194, 120, 0.2); /* Linha sutil separando a info da hora */
+    padding-bottom: 6px;
+  }
+
+  .secondary-clock .city {
+    text-align: left; /* Alinhado à esquerda ao lado da bandeira fica mais limpo */
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  .secondary-clock .time-block {
+    width: 100%;
+  }
+
+  .secondary-clock .time {
+    font-size: clamp(35px, 3.8vw, 55px); /* Relógio levemente ajustado para o novo espaço */
+    margin-top: 4px;
+  }
+
+  .secondary-clock .date-display {
+    font-size: 11px;
+  }
   
+  /* Estrutura de grid das seções */
   #block-europa { flex: 1; }
 
   .middle-layout { 
@@ -248,7 +286,7 @@
   #block-sul { flex: 2; }      
   #block-central { flex: 1; }  
 
-  .secondary-clock { flex: 0.9; }
+  .secondary-clock { flex: 1; } /* Aumentado levemente o espaço do container da América do Norte */
 
   .seconds { font-size: 0.5em; color: var(--accent); margin-left: 2px; font-weight: 900; }
 
@@ -271,7 +309,7 @@
 <header id="header">
   <div style="font-size: 11px; font-weight: 900; color: var(--accent);">BUSUP OPS DASHBOARD</div>
   <div class="header-btns">
-    <button onclick="toggleDarkMode()" class="btn-ui dark" id="dark-btn">MODO NOTURNO</button>
+    <button onclick="toggleDarkMode()" class="btn-ui dark" id="dark-btn">MODO CLARO</button>
     <button onclick="toggleFullScreen()" class="btn-ui">TELA CHEIA</button>
   </div>
 </header>
