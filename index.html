@@ -7,22 +7,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
+  /* ==========================================================================
+     CORES: AGORA O PADRÃO NATIVO É O MODO ESCURO
+     ========================================================================== */
   :root {
     --accent: #01C278; 
-    --primary: #000;
-    --bg: #fff;
-    --card-bg: #fff;
-    --text-city: #333;
-    --header-border: #eee;
-    --remove: #ff4d4d;
-  }
-
-  body.dark-mode {
     --primary: #fff;
     --bg: #0a0a0a;
     --card-bg: #1a1a1a;
     --text-city: #aaa;
     --header-border: #333;
+    --remove: #ff4d4d;
+  }
+
+  /* O modo claro virou a exceção caso clique no botão */
+  body.light-mode {
+    --primary: #000;
+    --bg: #fff;
+    --card-bg: #fff;
+    --text-city: #333;
+    --header-border: #eee;
   }
 
   body {
@@ -129,31 +133,25 @@
   .clocks-display {
     display: flex;
     justify-content: center; 
-    align-items: stretch;
+    align-items: center;
     flex: 1;
     min-height: 0;
     gap: 15px; 
     width: 100%;
   }
 
-  /* ==========================================================================
-     LAYOUT PADRÃO (EUROPA, SUL E CENTRAL) - LADO A LADO
-     ========================================================================== */
   .country-mini-card {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 8px; 
     position: relative;
-    padding: 10px 20px;
+    padding: 5px 10px;
     box-sizing: border-box;
     flex: 1;
     min-width: 0;
-    border: 1px solid var(--header-border);
-    border-radius: 8px;
+    border: 1px solid transparent; 
   }
-
-  body.dark-mode .country-mini-card { border-color: #222; }
 
   .btn-remove {
     position: absolute;
@@ -170,15 +168,14 @@
     z-index: 10;
   }
 
-  /* Bloco de identidade fixo em 55px nas regiões padrão */
   .identity-block { 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     gap: 6px; 
-    width: 55px;         
-    max-width: 55px;     
-    min-width: 55px;     
+    width: 65px;         
+    max-width: 65px;     
+    min-width: 65px;     
     flex-shrink: 0;
   }
   
@@ -219,60 +216,44 @@
     word-break: keep-all;       
     overflow-wrap: normal;      
     white-space: normal; 
-    font-size: clamp(8px, 1.5vw, 11px); 
+    font-size: clamp(9px, 1.6vw, 12px); 
     width: 100%;
   }
 
   .flag-img { 
-    width: 55px; 
+    width: 65px; 
     height: auto; 
     border: 2px solid var(--accent); 
     border-radius: 5px; 
     box-sizing: border-box;
   } 
 
-  /* ==========================================================================
-     LAYOUT EXCLUSIVO DA AMÉRICA DO NORTE (CONTEÚDO VERTICAL PARA EVITAR SOBREPOSIÇÃO)
-     ========================================================================== */
+  /* Regras exclusivas América do Norte */
   .secondary-clock .country-mini-card {
-    flex-direction: column; /* Coloca os blocos um embaixo do outro */
-    justify-content: space-between;
-    padding: 8px 10px;
-    gap: 8px;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: center;
+    gap: 12px;
   }
 
-  /* Na América do Norte, permitimos que o bloco de texto ocupe toda a largura */
   .secondary-clock .identity-block {
-    width: 100%;
-    max-width: 100%;
-    min-width: 100%;
-    flex-direction: row; /* Coloca bandeira do lado do texto, mas no topo do card */
-    justify-content: center;
-    gap: 10px;
-    border-bottom: 1px dashed rgba(1, 194, 120, 0.2); /* Linha sutil separando a info da hora */
-    padding-bottom: 6px;
+    width: 75px;
+    max-width: 75px;
+    min-width: 75px;
+  }
+
+  .secondary-clock .flag-img {
+    width: 65px; 
   }
 
   .secondary-clock .city {
-    text-align: left; /* Alinhado à esquerda ao lado da bandeira fica mais limpo */
-    font-size: 10px;
-    line-height: 1.2;
-  }
-
-  .secondary-clock .time-block {
-    width: 100%;
+    font-size: clamp(8px, 1.3vw, 10px); 
   }
 
   .secondary-clock .time {
-    font-size: clamp(35px, 3.8vw, 55px); /* Relógio levemente ajustado para o novo espaço */
-    margin-top: 4px;
-  }
-
-  .secondary-clock .date-display {
-    font-size: 11px;
+    font-size: clamp(38px, 4.5vw, 70px); 
   }
   
-  /* Estrutura de grid das seções */
   #block-europa { flex: 1; }
 
   .middle-layout { 
@@ -286,7 +267,7 @@
   #block-sul { flex: 2; }      
   #block-central { flex: 1; }  
 
-  .secondary-clock { flex: 1; } /* Aumentado levemente o espaço do container da América do Norte */
+  .secondary-clock { flex: 1; } 
 
   .seconds { font-size: 0.5em; color: var(--accent); margin-left: 2px; font-weight: 900; }
 
@@ -435,19 +416,37 @@ function update() {
   });
 }
 
+/* FUNÇÃO MELHORADA DE TELA CHEIA */
+function launchFullScreen() {
+  const docEl = document.documentElement;
+  if (docEl.requestFullscreen) { docEl.requestFullscreen(); }
+  else if (docEl.mozRequestFullScreen) { docEl.mozRequestFullScreen(); }
+  else if (docEl.webkitRequestFullscreen) { docEl.webkitRequestFullscreen(); }
+  else if (docEl.msRequestFullscreen) { docEl.msRequestFullscreen(); }
+}
+
 function toggleFullScreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
+  if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+    launchFullScreen();
   } else {
-    document.exitFullscreen();
+    if (document.exitFullscreen) { document.exitFullscreen(); }
   }
 }
 
 function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
+  document.body.classList.toggle('light-mode');
   const btn = document.getElementById('dark-btn');
-  btn.innerText = document.body.classList.contains('dark-mode') ? 'MODO CLARO' : 'MODO NOTURNO';
+  btn.innerText = document.body.classList.contains('light-mode') ? 'MODO NOTURNO' : 'MODO CLARO';
 }
+
+// Tenta carregar tela cheia ao iniciar (e adiciona gatilho de backup no primeiro clique se a TV bloquear)
+window.onload = function() {
+  setTimeout(launchFullScreen, 1000); 
+  document.body.addEventListener('click', function fallbackRequest() {
+    launchFullScreen();
+    document.body.removeEventListener('click', fallbackRequest); // Remove o listener após o primeiro uso
+  });
+};
 
 init();
 setInterval(update, 1000);
