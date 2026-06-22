@@ -94,9 +94,9 @@
     border-radius: 12px;
     padding: 10px;
     background: var(--card-bg);
-    flex: 1;
     position: relative;
     min-height: 0;
+    box-sizing: border-box;
   }
 
   .region-title {
@@ -135,12 +135,16 @@
     gap: 10px;
   }
 
+  /* CARDS COM LARGURA FIXA PARA EVITAR QUE ELES FIQUEM "DANCANDO" */
   .country-mini-card {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 15px;
     position: relative;
     padding: 5px;
+    width: 250px; /* Largura padrão fixa */
+    box-sizing: border-box;
   }
 
   .btn-remove {
@@ -163,10 +167,16 @@
     flex-direction: column; 
     align-items: center; 
     gap: 8px; 
-    width: 130px;
+    width: 110px;
+    flex-shrink: 0;
   }
   
-  .time-block { display: flex; flex-direction: column; align-items: center; }
+  .time-block { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    flex-shrink: 0;
+  }
 
   .date-display {
     font-size: clamp(10px, 1vw, 13px);
@@ -179,7 +189,8 @@
   .time {
     font-weight: 900; 
     line-height: 0.9;
-    letter-spacing: -2px;
+    letter-spacing: -1px;
+    font-variant-numeric: tabular-nums; /* Mantém os números com larguras idênticas */
   }
 
   .city { 
@@ -191,29 +202,36 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     font-size: 14px;
+    width: 100%;
   }
 
-  .large-font .time { font-size: clamp(40px, 6vw, 90px); }
-  .large-font .flag-img { height: clamp(40px, 5vw, 75px); border: 3px solid var(--accent); border-radius: 8px; }
-  .large-font .city { font-size: 16px; }
+  /* BLOCOS GRANDES (EUROPA, SUL, CENTRAL) */
+  .large-font .time { font-size: clamp(35px, 5vw, 65px); }
+  .large-font .flag-img { height: clamp(35px, 4.5vw, 55px); border: 3px solid var(--accent); border-radius: 8px; }
+  .large-font .city { font-size: 15px; }
+  #block-europa { flex: 1; }
 
+  /* LINHA DO MEIO FIXADA EM PORCENTAGEM EXATA PARA RECONHECIMENTO DA TV */
   .middle-layout { 
     display: flex; 
     gap: 15px; 
     flex: 1.1;
     min-height: 0;
+    width: 100%;
   }
   
-  #block-sul { flex: 1.3; }
-  #block-central { flex: 0.7; }
+  #block-sul { width: 64%; flex: none; }      /* Largura estrita */
+  #block-central { width: 36%; flex: none; }  /* Largura estrita */
 
-  .secondary-clock { flex: 0.8; }
-  .secondary-clock .time { font-size: clamp(28px, 3.5vw, 50px); }
-  .secondary-clock .flag-img { height: clamp(35px, 4vw, 50px); border: 2px solid var(--accent); border-radius: 6px; }
-  .secondary-clock .city { font-size: 12px; }
-  .secondary-clock .identity-block { width: 100px; }
+  /* BLOCO INFERIOR (NORTE) - MENOR PARA CABER 4 CARDS EM LINHA */
+  .secondary-clock { flex: 0.9; }
+  .secondary-clock .country-mini-card { width: 210px; } /* Menor para acomodar os 4 da América do Norte */
+  .secondary-clock .time { font-size: clamp(26px, 3vw, 42px); }
+  .secondary-clock .flag-img { height: 35px; border: 2px solid var(--accent); border-radius: 6px; }
+  .secondary-clock .city { font-size: 11px; }
+  .secondary-clock .identity-block { width: 90px; }
 
-  .seconds { font-size: 0.45em; color: var(--accent); margin-left: 4px; font-weight: 900; }
+  .seconds { font-size: 0.5em; color: var(--accent); margin-left: 2px; font-weight: 900; }
 
   .btn-ui {
     background: var(--accent);
@@ -262,9 +280,9 @@
 <script>
 const regionalDB = {
   "Europa": [
-    { tz: "Europe/Lisbon", name: "Portugal", flag: "pt", default: true },
-    { tz: "Europe/Madrid", name: "Espanha", flag: "es", default: true },
-    { tz: "Europe/Paris", name: "França", flag: "fr", default: true }
+    { tz: "Europe/Lisbon", name: "PORTUGAL", flag: "pt", default: true },
+    { tz: "Europe/Madrid", name: "ESPANHA", flag: "es", default: true },
+    { tz: "Europe/Paris", name: "FRANÇA", flag: "fr", default: false }
   ],
   "América do Sul": [
     { tz: "America/Sao_Paulo", name: "BR (SÃO PAULO)", flag: "br", default: true },
@@ -376,7 +394,7 @@ function toggleDarkMode() {
 
 init();
 setInterval(update, 1000);
-update(); // Executa imediatamente no carregamento
+update();
 </script>
 </body>
 </html>
