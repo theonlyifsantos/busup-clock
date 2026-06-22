@@ -12,7 +12,7 @@
     --primary: #fff;
     --bg: #0a0a0a;
     --card-bg: #1a1a1a;
-    --text-city: #fff; /* Força o branco puro para máxima leitura de longe */
+    --text-city: #fff; 
     --header-border: #333;
     --remove: #ff4d4d;
   }
@@ -44,6 +44,8 @@
     border-bottom: 2px solid var(--header-border);
     align-items: center;
     flex-shrink: 0;
+    position: relative;
+    z-index: 100; /* Garante cliques nos botões do cabeçalho */
   }
 
   :fullscreen header, :-webkit-full-screen header,
@@ -114,6 +116,8 @@
     justify-content: center;
     gap: 10px;
     margin-bottom: 5px;
+    position: relative;
+    z-index: 50;
   }
 
   select {
@@ -136,15 +140,12 @@
     width: 100%;
   }
 
-  /* ==========================================================================
-     NOVA ESTRUTURA VERTICAL DO CARD (BLOCO EM CIMA, TEXTO EMBAIXO)
-     ========================================================================== */
   .country-mini-card {
     display: flex;
-    flex-direction: column; /* Alinha o bloco visual acima e o texto abaixo */
+    flex-direction: column; 
     align-items: center;
     justify-content: center;
-    gap: 4px; 
+    gap: 2px; 
     position: relative;
     padding: 5px;
     box-sizing: border-box;
@@ -153,13 +154,21 @@
     border: 1px solid transparent; 
   }
 
-  /* Linha superior: Junta a bandeira ao relógio com espaço mínimo */
+  /* Bloco de conteúdo empilhado: data no topo, embaixo a linha alinhada */
+  .card-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Linha central que une a Bandeira e o Relógio estritamente */
   .card-top-row {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: center; /* Centraliza verticalmente apenas bandeira + relógio */
     justify-content: center;
-    gap: 6px; /* Super unido agora */
+    gap: 8px; 
     width: 100%;
   }
 
@@ -175,7 +184,7 @@
     height: 22px;
     font-weight: 900;
     cursor: pointer;
-    z-index: 10;
+    z-index: 110;
   }
 
   .identity-block { 
@@ -197,15 +206,16 @@
     min-width: 0;
   }
 
+  /* DATAS AUMENTADAS */
   .date-display {
-    font-size: clamp(10px, 0.9vw, 13px);
-    font-weight: 700;
+    font-size: clamp(12px, 1.1vw, 17px); /* Ganhou um belo incremento visual */
+    font-weight: 900; /* Mais grossa para ler de longe */
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 1px;
     white-space: nowrap;
     line-height: 1;
-    margin-bottom: 2px;
+    margin-bottom: 6px; /* Empurra levemente o bloco de baixo */
   }
 
   .time {
@@ -214,24 +224,24 @@
     letter-spacing: -1.5px;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-    font-size: clamp(45px, 5vw, 85px); 
+    font-size: clamp(45px, 5.2vw, 90px); 
   }
 
-  /* TEXTO ABAIXO DO RELÓGIO: AGORA MUITO MAIOR */
+  /* NOMES AINDA MAIORES COM QUEBRA DE LINHA SEGURO */
   .city { 
     font-weight: 900; 
     text-transform: uppercase; 
     color: var(--text-city); 
     text-align: center;
-    line-height: 1.1;
+    line-height: 1.05;
     letter-spacing: 0.5px;
     word-break: normal;       
     overflow-wrap: break-word;      
     white-space: normal; 
-    font-size: clamp(12px, 2vw, 26px); /* Perfeito para ler de longe */
-    width: 100%; /* Ocupa exatamente a largura total combinada acima */
+    font-size: clamp(14px, 2.3vw, 32px); /* Teto esticado para 32px nos painéis principais */
+    width: 100%; 
     max-width: 100%;
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
   .flag-img { 
@@ -242,16 +252,15 @@
     box-sizing: border-box;
   } 
 
-  /* Ajuste fino para os blocos com mais densidade (América do Norte com 4 relógios) */
+  /* Controle de densidade da América do Norte (4 relógios) */
   .secondary-clock .time {
     font-size: clamp(38px, 4.2vw, 68px); 
   }
 
   .secondary-clock .city {
-    font-size: clamp(11px, 1.5vw, 18px); /* Reduz sutilmente apenas aqui para não estourar a tela */
+    font-size: clamp(12px, 1.7vw, 22px); /* Teto esticado para 22px */
   }
   
-  /* Grid de layout */
   #block-europa { flex: 1; }
 
   .middle-layout { 
@@ -288,8 +297,8 @@
 <header id="header">
   <div style="font-size: 11px; font-weight: 900; color: var(--accent);">BUSUP OPS DASHBOARD</div>
   <div class="header-btns">
-    <button onclick="toggleDarkMode()" class="btn-ui dark" id="dark-btn">MODO CLARO</button>
-    <button onclick="toggleFullScreen()" class="btn-ui">TELA CHEIA</button>
+    <button onclick="event.stopPropagation(); toggleDarkMode();" class="btn-ui dark" id="dark-btn">MODO CLARO</button>
+    <button onclick="event.stopPropagation(); toggleFullScreen();" class="btn-ui">TELA CHEIA</button>
   </div>
 </header>
 
@@ -350,8 +359,8 @@ function init() {
     parent.innerHTML = `
       <div class="region-title">${reg}</div>
       <div class="region-controls">
-        <select id="select-${data.id}"><option value="">+ LOCAL</option>${optionsHtml}</select>
-        <button class="btn-ui" onclick="addClock('${reg}', '${data.id}')">OK</button>
+        <select id="select-${data.id}" onclick="event.stopPropagation()"><option value="">+ LOCAL</option>${optionsHtml}</select>
+        <button class="btn-ui" onclick="event.stopPropagation(); addClock('${reg}', '${data.id}')">OK</button>
       </div>
       <div class="clocks-display" id="display-${data.id}"></div>
     `;
@@ -359,7 +368,6 @@ function init() {
   });
 }
 
-/* RENDEREZAÇÃO REESTRUTURADA COM TEXTO ABAIXO DA LINHA DO RELÓGIO */
 function render(containerId, tz, name, flag) {
   const display = document.getElementById(`display-${containerId}`);
   if(activeClocks.some(c => c.tz === tz && c.containerId === containerId)) return;
@@ -368,14 +376,16 @@ function render(containerId, tz, name, flag) {
   card.className = "country-mini-card";
   card.id = `card-${uniqueId}`;
   card.innerHTML = `
-    <button class="btn-remove" onclick="removeClock('${uniqueId}')">×</button>
-    <div class="card-top-row">
-        <div class="identity-block">
-            <img class="flag-img" src="https://flagcdn.com/w160/${flag}.png">
-        </div>
-        <div class="time-block">
-            <div class="date-display" id="date-${uniqueId}">-- ------- ----</div>
-            <div class="time" id="${uniqueId}">00:00<span class="seconds">00</span></div>
+    <button class="btn-remove" onclick="event.stopPropagation(); removeClock('${uniqueId}')">×</button>
+    <div class="card-content-wrapper">
+        <div class="date-display" id="date-${uniqueId}">-- ------- ----</div>
+        <div class="card-top-row">
+            <div class="identity-block">
+                <img class="flag-img" src="https://flagcdn.com/w160/${flag}.png">
+            </div>
+            <div class="time-block">
+                <div class="time" id="${uniqueId}">00:00<span class="seconds">00</span></div>
+            </div>
         </div>
     </div>
     <div class="city">${name}</div>
@@ -417,19 +427,22 @@ function update() {
   });
 }
 
-function launchFullScreen() {
-  const docEl = document.documentElement;
-  if (docEl.requestFullscreen) { docEl.requestFullscreen(); }
-  else if (docEl.mozRequestFullScreen) { docEl.mozRequestFullScreen(); }
-  else if (docEl.webkitRequestFullscreen) { docEl.webkitRequestFullscreen(); }
-  else if (docEl.msRequestFullscreen) { docEl.msRequestFullscreen(); }
+function isFullScreen() {
+  return !!(document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
 }
 
 function toggleFullScreen() {
-  if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-    launchFullScreen();
+  if (!isFullScreen()) {
+    const docEl = document.documentElement;
+    if (docEl.requestFullscreen) { docEl.requestFullscreen(); }
+    else if (docEl.mozRequestFullScreen) { docEl.mozRequestFullScreen(); }
+    else if (docEl.webkitRequestFullscreen) { docEl.webkitRequestFullscreen(); }
+    else if (docEl.msRequestFullscreen) { docEl.msRequestFullscreen(); }
   } else {
     if (document.exitFullscreen) { document.exitFullscreen(); }
+    else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
+    else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+    else if (document.msExitFullscreen) { document.msExitFullscreen(); }
   }
 }
 
@@ -439,11 +452,11 @@ function toggleDarkMode() {
   btn.innerText = document.body.classList.contains('light-mode') ? 'MODO NOTURNO' : 'MODO CLARO';
 }
 
+// O clique global agora funciona como um liga/desliga perfeito para a tela cheia
 window.onload = function() {
-  setTimeout(launchFullScreen, 1000); 
-  document.body.addEventListener('click', function fallbackRequest() {
-    launchFullScreen();
-    document.body.removeEventListener('click', fallbackRequest); 
+  setTimeout(toggleFullScreen, 1000); 
+  document.body.addEventListener('click', function() {
+    toggleFullScreen();
   });
 };
 
