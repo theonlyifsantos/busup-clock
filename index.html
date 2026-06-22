@@ -8,19 +8,18 @@
 
 <style>
   /* ==========================================================================
-     CORES: AGORA O PADRÃO NATIVO É O MODO ESCURO
+     CORES: MODO ESCURO PADRÃO
      ========================================================================== */
   :root {
     --accent: #01C278; 
     --primary: #fff;
     --bg: #0a0a0a;
     --card-bg: #1a1a1a;
-    --text-city: #aaa;
+    --text-city: #eee; /* Deixei levemente mais claro para destacar o nome maior */
     --header-border: #333;
     --remove: #ff4d4d;
   }
 
-  /* O modo claro virou a exceção caso clique no botão */
   body.light-mode {
     --primary: #000;
     --bg: #fff;
@@ -133,7 +132,7 @@
   .clocks-display {
     display: flex;
     justify-content: center; 
-    align-items: center;
+    align-items: center; /* Alinhamento horizontal garantido na linha do bloco */
     flex: 1;
     min-height: 0;
     gap: 15px; 
@@ -142,9 +141,9 @@
 
   .country-mini-card {
     display: flex;
-    align-items: center;
+    align-items: center; /* Garante alinhamento central vertical interno entre os blocos */
     justify-content: center;
-    gap: 8px; 
+    gap: 12px; 
     position: relative;
     padding: 5px 10px;
     box-sizing: border-box;
@@ -168,14 +167,16 @@
     z-index: 10;
   }
 
+  /* Bloco de identidade (Texto + Bandeira) */
   .identity-block { 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
+    justify-content: center;
     gap: 6px; 
-    width: 65px;         
-    max-width: 65px;     
-    min-width: 65px;     
+    width: 75px;         /* Aumentado um pouco para comportar os nomes maiores sem esmagar */
+    max-width: 75px;     
+    min-width: 75px;     
     flex-shrink: 0;
   }
   
@@ -207,6 +208,7 @@
     font-size: clamp(45px, 5.2vw, 90px); 
   }
 
+  /* TEXTO DOS LOCAIS: CONFIGURADO PARA SER MAIOR EM TODOS OS CARDS */
   .city { 
     font-weight: 900; 
     text-transform: uppercase; 
@@ -216,7 +218,7 @@
     word-break: keep-all;       
     overflow-wrap: normal;      
     white-space: normal; 
-    font-size: clamp(9px, 1.6vw, 12px); 
+    font-size: clamp(10px, 1.8vw, 14px); /* Ganhou um belo aumento geral */
     width: 100%;
   }
 
@@ -228,32 +230,31 @@
     box-sizing: border-box;
   } 
 
-  /* Regras exclusivas América do Norte */
+  /* ==========================================================================
+     REGRAS EXCLUSIVAS: AMÉRICA DO NORTE (.secondary-clock)
+     ========================================================================== */
   .secondary-clock .country-mini-card {
     flex-direction: row; 
-    align-items: center; 
+    align-items: center; /* Alinhamento horizontal cravado no centro */
     justify-content: center;
     gap: 12px;
   }
 
   .secondary-clock .identity-block {
-    width: 75px;
-    max-width: 75px;
-    min-width: 75px;
-  }
-
-  .secondary-clock .flag-img {
-    width: 65px; 
+    width: 85px; /* Ganhou uma margem extra na largura por conta dos nomes gigantes de lá */
+    max-width: 85px;
+    min-width: 85px;
   }
 
   .secondary-clock .city {
-    font-size: clamp(8px, 1.3vw, 10px); 
+    font-size: clamp(9px, 1.4vw, 11px); /* Ajustado proporcionalmente para não causar sobreposição */
   }
 
   .secondary-clock .time {
     font-size: clamp(38px, 4.5vw, 70px); 
   }
   
+  /* Grid de layout */
   #block-europa { flex: 1; }
 
   .middle-layout { 
@@ -361,6 +362,7 @@ function init() {
   });
 }
 
+/* ORDEM INVERTIDA NO HTML INTERNO DO CARD: NOME ACIMA DA BANDEIRA */
 function render(containerId, tz, name, flag) {
   const display = document.getElementById(`display-${containerId}`);
   if(activeClocks.some(c => c.tz === tz && c.containerId === containerId)) return;
@@ -371,8 +373,8 @@ function render(containerId, tz, name, flag) {
   card.innerHTML = `
     <button class="btn-remove" onclick="removeClock('${uniqueId}')">×</button>
     <div class="identity-block">
-        <img class="flag-img" src="https://flagcdn.com/w160/${flag}.png">
         <div class="city">${name}</div>
+        <img class="flag-img" src="https://flagcdn.com/w160/${flag}.png">
     </div>
     <div class="time-block">
         <div class="date-display" id="date-${uniqueId}">-- ------- ----</div>
@@ -416,7 +418,6 @@ function update() {
   });
 }
 
-/* FUNÇÃO MELHORADA DE TELA CHEIA */
 function launchFullScreen() {
   const docEl = document.documentElement;
   if (docEl.requestFullscreen) { docEl.requestFullscreen(); }
@@ -439,12 +440,11 @@ function toggleDarkMode() {
   btn.innerText = document.body.classList.contains('light-mode') ? 'MODO NOTURNO' : 'MODO CLARO';
 }
 
-// Tenta carregar tela cheia ao iniciar (e adiciona gatilho de backup no primeiro clique se a TV bloquear)
 window.onload = function() {
   setTimeout(launchFullScreen, 1000); 
   document.body.addEventListener('click', function fallbackRequest() {
     launchFullScreen();
-    document.body.removeEventListener('click', fallbackRequest); // Remove o listener após o primeiro uso
+    document.body.removeEventListener('click', fallbackRequest); 
   });
 };
 
