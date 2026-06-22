@@ -10,26 +10,25 @@
   :root {
     --accent: #01C278; 
     --primary: #fff;
-    --bg: #0a0a0a;
-    --card-bg: #1a1a1a;
+    /* Fundo dos containers em formato de vidro escuro transparente (Opacidade em 45%) */
+    --card-bg: rgba(26, 26, 26, 0.45); 
     --text-city: #fff; 
-    --header-border: #333;
+    --header-border: rgba(255, 255, 255, 0.15);
     --remove: #ff4d4d;
   }
 
   body.light-mode {
     --primary: #000;
-    --bg: #fff;
-    --card-bg: #fff;
+    --card-bg: rgba(255, 255, 255, 0.65);
     --text-city: #111;
-    --header-border: #eee;
+    --header-border: rgba(0, 0, 0, 0.1);
   }
 
   body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    /* Substitua 'fundo.jpg' pelo nome exato do seu arquivo */
-    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('Gemini_Generated_Image_tw7a14tw7a14tw7a.png');
+    /* Película escura protetora + Sua imagem de fundo do GitHub */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('Gemini_Generated_Image_tw7a14tw7a14tw7a.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -40,17 +39,28 @@
     display: flex;
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
+    transition: background-image 0.3s ease;
+  }
+
+  /* Adiciona uma película clara se o modo claro for ativado */
+  body.light-mode {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)), url('Gemini_Generated_Image_tw7a14tw7a14tw7a.png');
   }
 
   header {
     display: flex;
     justify-content: space-between;
     padding: 10px 40px;
+    background: rgba(0, 0, 0, 0.25);
     border-bottom: 2px solid var(--header-border);
     align-items: center;
     flex-shrink: 0;
     position: relative;
     z-index: 100;
+  }
+  
+  body.light-mode header {
+    background: rgba(255, 255, 255, 0.25);
   }
 
   :fullscreen header, :-webkit-full-screen header,
@@ -101,6 +111,9 @@
     border-radius: 12px;
     padding: 10px;
     background: var(--card-bg);
+    /* Efeito de Vidro Fosco atrás dos relógios */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     position: relative;
     min-height: 0;
     box-sizing: border-box;
@@ -126,13 +139,18 @@
   }
 
   select {
-    background: var(--card-bg);
-    color: var(--primary);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
     border: 2px solid var(--accent);
     border-radius: 6px;
     padding: 2px 8px;
     font-size: 11px;
     font-weight: 700;
+  }
+  
+  body.light-mode select {
+    background: rgba(255, 255, 255, 0.8);
+    color: #000;
   }
 
   .clocks-display {
