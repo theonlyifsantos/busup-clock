@@ -164,19 +164,18 @@
     z-index: 10;
   }
 
-  /* O BLOCO AGORA TRAVA EXATAMENTE NOS 55PX DA BANDEIRA */
+  /* BLOCO DA BANDEIRA TRAVADO DE VERDADE EM 55PX (SEM ENCOLHER) */
   .identity-block { 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     gap: 6px; 
-    width: 55px;         /* Força o bloco a ter o tamanho da bandeira */
-    max-width: 55px;     /* Impede que o texto empurre os lados */
+    width: 55px;         
+    max-width: 55px;     
+    min-width: 55px;     /* Garante que o flexbox nunca esmague a bandeira */
     flex-shrink: 0;
-    min-width: 0;
   }
   
-  /* O relógio agora pega 100% do espaço restante do card */
   .time-block { 
     display: flex; 
     flex-direction: column; 
@@ -204,17 +203,21 @@
     font-size: clamp(38px, 4.8vw, 75px);
   }
 
-  /* O texto se molda e quebra perfeitamente dentro dos limites dos 55px */
+  /* CONFIGURAÇÃO PARA QUEBRAR APENAS EM ESPAÇOS/SÍMBOLOS, SEM CORTAR PALAVRAS */
   .city { 
     font-weight: 900; 
     text-transform: uppercase; 
     color: var(--text-city); 
     text-align: center;
     line-height: 1.1;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    
+    /* Quebra apenas em espaços, traços ou barras horizontais */
+    word-break: keep-all;       
+    overflow-wrap: normal;      
     white-space: normal; 
-    font-size: 10px; /* Um pouco menor para acomodar nomes grandes nos 55px */
+    
+    /* Fonte inteligente: diminui ligeiramente se a palavra fixa for gigante */
+    font-size: clamp(8px, 1.5vw, 11px); 
     width: 100%;
   }
 
@@ -262,7 +265,7 @@
 <header id="header">
   <div style="font-size: 11px; font-weight: 900; color: var(--accent);">BUSUP OPS DASHBOARD</div>
   <div class="header-btns">
-    <button onclick="toggleDarkMode()" class="btn-ui dark" id="dark-btn">MODO NOTURNO</button>
+    <button onclick="toggleDarkMode()" class="btn-ui dark" id="dark-btn">MODO CLARO</button>
     <button onclick="toggleFullScreen()" class="btn-ui">TELA CHEIA</button>
   </div>
 </header>
