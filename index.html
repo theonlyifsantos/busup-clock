@@ -136,18 +136,17 @@
     width: 100%;
   }
 
-  /* TODOS OS CARDS IGUAIS AGORA, COM O SEU MEIO-TERMO DE TAMANHO */
   .country-mini-card {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 12px;
     position: relative;
-    padding: 5px 10px;
+    padding: 5px 8px;
     box-sizing: border-box;
     flex: 1;
     min-width: 0;
-    max-width: 380px; /* Padronizado para todas as regiões */
+    max-width: 380px;
   }
 
   .btn-remove {
@@ -165,23 +164,26 @@
     z-index: 10;
   }
 
-  /* Espaço balanceado para que os blocos respirem */
+  /* O BLOCO AGORA TRAVA EXATAMENTE NOS 55PX DA BANDEIRA */
   .identity-block { 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     gap: 6px; 
-    width: 40%; 
+    width: 55px;         /* Força o bloco a ter o tamanho da bandeira */
+    max-width: 55px;     /* Impede que o texto empurre os lados */
     flex-shrink: 0;
     min-width: 0;
   }
   
+  /* O relógio agora pega 100% do espaço restante do card */
   .time-block { 
     display: flex; 
     flex-direction: column; 
     align-items: center;
-    width: 60%; 
+    flex: 1; 
     flex-shrink: 0;
+    min-width: 0;
   }
 
   .date-display {
@@ -199,29 +201,29 @@
     letter-spacing: -1.5px;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-    font-size: clamp(38px, 5vw, 75px); /* Tamanho ideal do relógio */
+    font-size: clamp(38px, 4.8vw, 75px);
   }
 
-  /* Liberado para quebrar linhas verticalmente se o nome for extenso */
+  /* O texto se molda e quebra perfeitamente dentro dos limites dos 55px */
   .city { 
     font-weight: 900; 
     text-transform: uppercase; 
     color: var(--text-city); 
     text-align: center;
-    line-height: 1.2;
+    line-height: 1.1;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal; 
-    font-size: 13px;
+    font-size: 10px; /* Um pouco menor para acomodar nomes grandes nos 55px */
     width: 100%;
   }
 
-  /* BANDEIRA TAMANHO INTERMEDIÁRIO PERFEITO */
   .flag-img { 
-    width: 65px; 
+    width: 55px; 
     height: auto; 
     border: 2px solid var(--accent); 
     border-radius: 5px; 
+    box-sizing: border-box;
   } 
   
   #block-europa { flex: 1; }
@@ -237,9 +239,7 @@
   #block-sul { flex: 2; }      
   #block-central { flex: 1; }  
 
-  /* IGUALADO AO LAYOUT DOS DEMAIS */
   .secondary-clock { flex: 0.9; }
-  .secondary-clock .city { font-size: 12px; }
 
   .seconds { font-size: 0.5em; color: var(--accent); margin-left: 2px; font-weight: 900; }
 
@@ -295,7 +295,7 @@ const regionalDB = {
     { tz: "Europe/Paris", name: "FRANÇA", flag: "fr", default: true }
   ],
   "América do Sul": [
-    { tz: "America/Sao_Paulo", name: "BR (SÃO PAAULO)", flag: "br", default: true },
+    { tz: "America/Sao_Paulo", name: "BR (SÃO PAULO)", flag: "br", default: true },
     { tz: "America/Manaus", name: "BR (MANAUS)", flag: "br", default: true }
   ],
   "América Central": [
