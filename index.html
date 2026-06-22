@@ -136,6 +136,7 @@
     width: 100%;
   }
 
+  /* TODOS OS CARDS IGUAIS AGORA, COM O SEU MEIO-TERMO DE TAMANHO */
   .country-mini-card {
     display: flex;
     align-items: center;
@@ -146,6 +147,7 @@
     box-sizing: border-box;
     flex: 1;
     min-width: 0;
+    max-width: 380px; /* Padronizado para todas as regiões */
   }
 
   .btn-remove {
@@ -163,13 +165,13 @@
     z-index: 10;
   }
 
-  /* Bloco do texto voltou a ter tamanho bom para o nome não esmagar */
+  /* Espaço balanceado para que os blocos respirem */
   .identity-block { 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     gap: 6px; 
-    width: 42%; 
+    width: 40%; 
     flex-shrink: 0;
     min-width: 0;
   }
@@ -178,12 +180,12 @@
     display: flex; 
     flex-direction: column; 
     align-items: center;
-    width: 58%; 
+    width: 60%; 
     flex-shrink: 0;
   }
 
   .date-display {
-    font-size: clamp(10px, 1.1vw, 15px);
+    font-size: clamp(10px, 1vw, 14px);
     font-weight: 700;
     color: var(--accent);
     text-transform: uppercase;
@@ -194,36 +196,33 @@
   .time {
     font-weight: 900; 
     line-height: 0.85;
-    letter-spacing: -2px;
+    letter-spacing: -1.5px;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+    font-size: clamp(38px, 5vw, 75px); /* Tamanho ideal do relógio */
   }
 
+  /* Liberado para quebrar linhas verticalmente se o nome for extenso */
   .city { 
     font-weight: 900; 
     text-transform: uppercase; 
     color: var(--text-city); 
     text-align: center;
-    line-height: 1.1;
+    line-height: 1.2;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    font-size: 14px;
+    white-space: normal; 
+    font-size: 13px;
     width: 100%;
   }
 
-  /* CONFIGURAÇÕES DE TAMANHO MÁXIMO AMPLIADAS (BLOCOS GRANDES) */
-  .large-font .country-mini-card { max-width: 450px; } 
-  .large-font .time { font-size: clamp(45px, 6vw, 95px); } 
-  
-  /* BANDEIRA PEQUENA CONTROLADA DE FORMA INDEPENDENTE */
-  .large-font .flag-img { 
-    width: 40px; 
+  /* BANDEIRA TAMANHO INTERMEDIÁRIO PERFEITO */
+  .flag-img { 
+    width: 48px; 
     height: auto; 
     border: 2px solid var(--accent); 
-    border-radius: 4px; 
+    border-radius: 5px; 
   } 
-  
-  .large-font .city { font-size: 15px; } /* Texto do nome mantido grande */
   
   #block-europa { flex: 1; }
 
@@ -238,24 +237,11 @@
   #block-sul { flex: 2; }      
   #block-central { flex: 1; }  
 
-  /* CONFIGURAÇÕES DE TAMANHO MÁXIMO AMPLIADAS (AMÉRICA DO NORTE - 4 CARDS) */
+  /* IGUALADO AO LAYOUT DOS DEMAIS */
   .secondary-clock { flex: 0.9; }
-  .secondary-clock .country-mini-card { max-width: 350px; } 
-  .secondary-clock .time { font-size: clamp(32px, 4vw, 55px); } 
-  
-  /* BANDEIRA PEQUENA NA AMÉRICA DO NORTE */
-  .secondary-clock .flag-img { 
-    width: 30px; 
-    height: auto; 
-    border: 1px solid var(--accent); 
-    border-radius: 3px; 
-  } 
-  
-  .secondary-clock .city { font-size: 12px; } /* Texto do nome mantido */
-  .secondary-clock .identity-block { width: 38%; }
-  .secondary-clock .time-block { width: 62%; }
+  .secondary-clock .city { font-size: 12px; }
 
-  .seconds { font-size: 0.45em; color: var(--accent); margin-left: 2px; font-weight: 900; }
+  .seconds { font-size: 0.5em; color: var(--accent); margin-left: 2px; font-weight: 900; }
 
   .btn-ui {
     background: var(--accent);
@@ -304,13 +290,13 @@
 <script>
 const regionalDB = {
   "Europa": [
-    { tz: "Europe/Lisbon", name: "Portugal", flag: "pt", default: true },
-    { tz: "Europe/Madrid", name: "Espanha", flag: "es", default: true },
-    { tz: "Europe/Paris", name: "França", flag: "fr", default: true }
+    { tz: "Europe/Lisbon", name: "PORTUGAL", flag: "pt", default: true },
+    { tz: "Europe/Madrid", name: "ESPANHA", flag: "es", default: true },
+    { tz: "Europe/Paris", name: "FRANÇA", flag: "fr", default: true }
   ],
   "América do Sul": [
-    { tz: "America/Sao_Paulo", name: "Brasil (SP)", flag: "br", default: true },
-    { tz: "America/Manaus", name: "Brasil (Manaus)", flag: "br", default: true }
+    { tz: "America/Sao_Paulo", name: "BR (SÃO PAAULO)", flag: "br", default: true },
+    { tz: "America/Manaus", name: "BR (MANAUS)", flag: "br", default: true }
   ],
   "América Central": [
     { tz: "America/Mexico_City", name: "MÉXICO (CDMX e TORREÓN)", flag: "mx", default: true }
