@@ -126,27 +126,34 @@
     font-weight: 700;
   }
 
+  /* Mudado para stretch para forçar os cards a preencherem as pontas */
   .clocks-display {
     display: flex;
-    justify-content: space-evenly; 
-    align-items: center;
+    justify-content: center; 
+    align-items: stretch;
     flex: 1;
     min-height: 0;
     gap: 15px; 
     width: 100%;
   }
 
+  /* REMOVIDO O MAX-WIDTH: os cards agora vão expandir até ocupar tudo */
   .country-mini-card {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 15px;
     position: relative;
-    padding: 5px 8px;
+    padding: 10px 20px;
     box-sizing: border-box;
     flex: 1;
     min-width: 0;
-    max-width: 380px;
+    border: 1px solid var(--header-border); /* Uma leve bordinha interna deixa os cards lindos quando esticados */
+    border-radius: 8px;
+  }
+
+  body.dark-mode .country-mini-card {
+    border-color: #222;
   }
 
   .btn-remove {
@@ -164,7 +171,7 @@
     z-index: 10;
   }
 
-  /* BLOCO DA BANDEIRA TRAVADO DE VERDADE EM 55PX (SEM ENCOLHER) */
+  /* Identidade cravada em 55px */
   .identity-block { 
     display: flex; 
     flex-direction: column; 
@@ -172,21 +179,23 @@
     gap: 6px; 
     width: 55px;         
     max-width: 55px;     
-    min-width: 55px;     /* Garante que o flexbox nunca esmague a bandeira */
+    min-width: 55px;     
     flex-shrink: 0;
   }
   
+  /* Bloco do relógio ganha o resto do card expandido */
   .time-block { 
     display: flex; 
     flex-direction: column; 
     align-items: center;
+    justify-content: center;
     flex: 1; 
     flex-shrink: 0;
     min-width: 0;
   }
 
   .date-display {
-    font-size: clamp(10px, 1vw, 14px);
+    font-size: clamp(11px, 1vw, 15px);
     font-weight: 700;
     color: var(--accent);
     text-transform: uppercase;
@@ -194,29 +203,26 @@
     white-space: nowrap;
   }
 
+  /* Relógio agora responde dinamicamente ao novo tamanho gigante do card */
   .time {
     font-weight: 900; 
     line-height: 0.85;
     letter-spacing: -1.5px;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-    font-size: clamp(38px, 4.8vw, 75px);
+    font-size: clamp(45px, 5.2vw, 90px); 
   }
 
-  /* CONFIGURAÇÃO PARA QUEBRAR APENAS EM ESPAÇOS/SÍMBOLOS, SEM CORTAR PALAVRAS */
+  /* Quebras perfeitas em espaços */
   .city { 
     font-weight: 900; 
     text-transform: uppercase; 
     color: var(--text-city); 
     text-align: center;
     line-height: 1.1;
-    
-    /* Quebra apenas em espaços, traços ou barras horizontais */
     word-break: keep-all;       
     overflow-wrap: normal;      
     white-space: normal; 
-    
-    /* Fonte inteligente: diminui ligeiramente se a palavra fixa for gigante */
     font-size: clamp(8px, 1.5vw, 11px); 
     width: 100%;
   }
@@ -265,7 +271,7 @@
 <header id="header">
   <div style="font-size: 11px; font-weight: 900; color: var(--accent);">BUSUP OPS DASHBOARD</div>
   <div class="header-btns">
-    <button onclick="toggleDarkMode()" class="btn-ui dark" id="dark-btn">MODO CLARO</button>
+    <button onclick="toggleDarkMode()" class="btn-ui dark" id="dark-btn">MODO NOTURNO</button>
     <button onclick="toggleFullScreen()" class="btn-ui">TELA CHEIA</button>
   </div>
 </header>
