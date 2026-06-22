@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +45,7 @@
     align-items: center;
     flex-shrink: 0;
     position: relative;
-    z-index: 100; /* Garante cliques nos botões do cabeçalho */
+    z-index: 100;
   }
 
   :fullscreen header, :-webkit-full-screen header,
@@ -154,7 +154,6 @@
     border: 1px solid transparent; 
   }
 
-  /* Bloco de conteúdo empilhado: data no topo, embaixo a linha alinhada */
   .card-content-wrapper {
     display: flex;
     flex-direction: column;
@@ -162,11 +161,10 @@
     width: 100%;
   }
 
-  /* Linha central que une a Bandeira e o Relógio estritamente */
   .card-top-row {
     display: flex;
     flex-direction: row;
-    align-items: center; /* Centraliza verticalmente apenas bandeira + relógio */
+    align-items: center; 
     justify-content: center;
     gap: 8px; 
     width: 100%;
@@ -206,16 +204,15 @@
     min-width: 0;
   }
 
-  /* DATAS AUMENTADAS */
   .date-display {
-    font-size: clamp(12px, 1.1vw, 17px); /* Ganhou um belo incremento visual */
-    font-weight: 900; /* Mais grossa para ler de longe */
+    font-size: clamp(12px, 1.1vw, 17px); 
+    font-weight: 900; 
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 1px;
     white-space: nowrap;
     line-height: 1;
-    margin-bottom: 6px; /* Empurra levemente o bloco de baixo */
+    margin-bottom: 6px; 
   }
 
   .time {
@@ -227,7 +224,6 @@
     font-size: clamp(45px, 5.2vw, 90px); 
   }
 
-  /* NOMES AINDA MAIORES COM QUEBRA DE LINHA SEGURO */
   .city { 
     font-weight: 900; 
     text-transform: uppercase; 
@@ -238,7 +234,7 @@
     word-break: normal;       
     overflow-wrap: break-word;      
     white-space: normal; 
-    font-size: clamp(14px, 2.3vw, 32px); /* Teto esticado para 32px nos painéis principais */
+    font-size: clamp(14px, 2.3vw, 32px); 
     width: 100%; 
     max-width: 100%;
     margin-top: 6px;
@@ -252,13 +248,12 @@
     box-sizing: border-box;
   } 
 
-  /* Controle de densidade da América do Norte (4 relógios) */
   .secondary-clock .time {
     font-size: clamp(38px, 4.2vw, 68px); 
   }
 
   .secondary-clock .city {
-    font-size: clamp(12px, 1.7vw, 22px); /* Teto esticado para 22px */
+    font-size: clamp(12px, 1.7vw, 22px); 
   }
   
   #block-europa { flex: 1; }
@@ -297,8 +292,8 @@
 <header id="header">
   <div style="font-size: 11px; font-weight: 900; color: var(--accent);">BUSUP OPS DASHBOARD</div>
   <div class="header-btns">
-    <button onclick="event.stopPropagation(); toggleDarkMode();" class="btn-ui dark" id="dark-btn">MODO CLARO</button>
-    <button onclick="event.stopPropagation(); toggleFullScreen();" class="btn-ui">TELA CHEIA</button>
+    <button onclick="event.stopPropagation(); toggleDarkMode();" class="btn-ui dark" id="dark-btn">LIGHT MODE</button>
+    <button onclick="event.stopPropagation(); toggleFullScreen();" class="btn-ui">FULLSCREEN</button>
   </div>
 </header>
 
@@ -324,29 +319,29 @@
 
 <script>
 const regionalDB = {
-  "Europa": [
+  "Europe": [
     { tz: "Europe/Lisbon", name: "PORTUGAL", flag: "pt", default: true },
-    { tz: "Europe/Madrid", name: "ESPANHA", flag: "es", default: true },
-    { tz: "Europe/Paris", name: "FRANÇA", flag: "fr", default: true }
+    { tz: "Europe/Madrid", name: "SPAIN", flag: "es", default: true },
+    { tz: "Europe/Paris", name: "FRANCE", flag: "fr", default: true }
   ],
-  "América do Sul": [
-    { tz: "America/Sao_Paulo", name: "BR (SÃO PAULO)", flag: "br", default: true },
-    { tz: "America/Manaus", name: "BR (MANAUS)", flag: "br", default: true }
+  "South America": [
+    { tz: "America/Sao_Paulo", name: "BRAZIL (SÃO PAULO)", flag: "br", default: true },
+    { tz: "America/Manaus", name: "BRAZIL (MANAUS)", flag: "br", default: true }
   ],
-  "América Central": [
-    { tz: "America/Mexico_City", name: "MÉXICO (CDMX e TORREÓN)", flag: "mx", default: true }
+  "Central America": [
+    { tz: "America/Mexico_City", name: "MEXICO (CDMX & TORREÓN)", flag: "mx", default: true }
   ],
-  "América do Norte": [
-    { tz: "America/New_York", name: "EUA (ATLANTA / INDIANA / PENSILVANIA)", flag: "us", default: true },
-    { tz: "America/Denver", name: "EUA (NEVADA / COLORADO)", flag: "us", default: true },
-    { tz: "America/Chicago", name: "EUA (HOUSTON / MISSISSIPPI)", flag: "us", default: true },
-    { tz: "America/Los_Angeles", name: "EUA (SEATTLE)", flag: "us", default: true }
+  "North America": [
+    { tz: "America/New_York", name: "USA (ATLANTA / INDIANA / PENNSYLVANIA)", flag: "us", default: true },
+    { tz: "America/Denver", name: "USA (NEVADA / COLORADO)", flag: "us", default: true },
+    { tz: "America/Chicago", name: "USA (HOUSTON / MISSISSIPPI)", flag: "us", default: true },
+    { tz: "America/Los_Angeles", name: "USA (SEATTLE)", flag: "us", default: true }
   ]
 };
 
 const config = {
-  "Europa": { id: "block-europa" }, "América do Sul": { id: "block-sul" },
-  "América Central": { id: "block-central" }, "América do Norte": { id: "block-norte" }
+  "Europe": { id: "block-europa" }, "South America": { id: "block-sul" },
+  "Central America": { id: "block-central" }, "North America": { id: "block-norte" }
 };
 
 let activeClocks = [];
@@ -359,7 +354,7 @@ function init() {
     parent.innerHTML = `
       <div class="region-title">${reg}</div>
       <div class="region-controls">
-        <select id="select-${data.id}" onclick="event.stopPropagation()"><option value="">+ LOCAL</option>${optionsHtml}</select>
+        <select id="select-${data.id}" onclick="event.stopPropagation()"><option value="">+ LOCATION</option>${optionsHtml}</select>
         <button class="btn-ui" onclick="event.stopPropagation(); addClock('${reg}', '${data.id}')">OK</button>
       </div>
       <div class="clocks-display" id="display-${data.id}"></div>
@@ -415,13 +410,13 @@ function update() {
     const dateEl = document.getElementById(`date-${c.id}`);
     if(timeEl && dateEl) {
       try {
-        const timeStr = now.toLocaleTimeString("pt-BR", {timeZone: c.tz, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
+        const timeStr = now.toLocaleTimeString("en-US", {timeZone: c.tz, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
         const [h, m, s] = timeStr.split(':');
         timeEl.innerHTML = `${h}:${m}<span class="seconds">${s}</span>`;
-        const dateStr = now.toLocaleDateString("en-GB", {timeZone: c.tz, day:'2-digit', month:'long', year:'numeric'});
+        const dateStr = now.toLocaleDateString("en-US", {timeZone: c.tz, day:'2-digit', month:'long', year:'numeric'});
         dateEl.innerText = dateStr;
       } catch(e) {
-        console.log("Erro no fuso: " + c.tz, e);
+        console.log("Timezone error: " + c.tz, e);
       }
     }
   });
@@ -449,10 +444,9 @@ function toggleFullScreen() {
 function toggleDarkMode() {
   document.body.classList.toggle('light-mode');
   const btn = document.getElementById('dark-btn');
-  btn.innerText = document.body.classList.contains('light-mode') ? 'MODO NOTURNO' : 'MODO CLARO';
+  btn.innerText = document.body.classList.contains('light-mode') ? 'DARK MODE' : 'LIGHT MODE';
 }
 
-// O clique global agora funciona como um liga/desliga perfeito para a tela cheia
 window.onload = function() {
   setTimeout(toggleFullScreen, 1000); 
   document.body.addEventListener('click', function() {
