@@ -44,7 +44,7 @@
 
   /* Adiciona uma película clara se o modo claro for ativado */
   body.light-mode {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)), url('Gemini_Generated_Image_tw7a14tw7a14tw7a.png');
+    background-image: linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)), url('Fundo.jpg');
   }
 
   header {
@@ -348,17 +348,18 @@ const regionalDB = {
     { tz: "Europe/Paris", name: "FRANCE", flag: "fr", default: true }
   ],
   "South America": [
-    { tz: "America/Sao_Paulo", name: "BRAZIL (SÃO PAULO)", flag: "br", default: true },
     { tz: "America/Manaus", name: "BRAZIL (MANAUS)", flag: "br", default: true }
+    { tz: "America/Sao_Paulo", name: "BRAZIL (SÃO PAULO)", flag: "br", default: true },
+    
   ],
   "Central America": [
     { tz: "America/Mexico_City", name: "MEXICO (CDMX & TORREÓN)", flag: "mx", default: true }
   ],
   "North America": [
-    { tz: "America/New_York", name: "USA (ATLANTA / INDIANA / PENNSYLVANIA)", flag: "us", default: true },
+    { tz: "America/Los_Angeles", name: "USA (SEATTLE)", flag: "us", default: true }
     { tz: "America/Denver", name: "USA (NEVADA / COLORADO)", flag: "us", default: true },
     { tz: "America/Chicago", name: "USA (HOUSTON / MISSISSIPPI)", flag: "us", default: true },
-    { tz: "America/Los_Angeles", name: "USA (SEATTLE)", flag: "us", default: true }
+    { tz: "America/New_York", name: "USA (ATLANTA / INDIANA / PENNSYLVANIA)", flag: "us", default: true },
   ]
 };
 
